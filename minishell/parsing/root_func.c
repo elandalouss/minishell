@@ -6,167 +6,168 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:09:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/07 04:50:07 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/08 02:35:22 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void    pipe_errors(t_token *token)
+/*pour la verification des pipe error ****/
+void	pipe_errors(t_token *token)
 {
-    if(token->next == NULL || token->prev == NULL)
-    {
-        ft_putstr_fd("ERROR : PIPE IN FRONT OR IN THE END\n", 2); // WA JAWAHIR BADLI HADI B ERROR S7I7
-        g_codes.g_exit_code = 258;
-        g_codes.g_error_code = 1;
-    }
-    else if(token->next->type == TOKEN_PIPE)
-    {
-        ft_putstr_fd("ERROR : DOUBLE PIPE\n", 2); // WA JAWAHIR BADLI HADI B ERROR S7I7
-        g_codes.g_exit_code = 258;
-        g_codes.g_error_code = 1;
-    }
+	if (token->next == NULL || token->prev == NULL)
+	{
+		ft_putstr_fd("ERROR : PIPE IN FRONT OR IN THE END\n", 2);// WA JAWAHIR BADLI HADI B ERROR S7I7
+		g_codes.g_exit_code = 258;
+		g_codes.g_error_code = 1;
+	}
+	else if (token->next->e_type == TOKEN_PIPE)
+	{
+		ft_putstr_fd("ERROR : DOUBLE PIPE\n", 2); // WA JAWAHIR BADLI HADI B ERROR S7I7
+		g_codes.g_exit_code = 258;
+		g_codes.g_error_code = 1;
+	}
 }
 
-void    redirection_errors(t_token *token)
+/*pour la veriication des error de redurection*/
+void	redirection_errors(t_token *token)
 {
-    if (token->next->type != TOKEN_WORD)
-    {
-        ft_putstr_fd("ERROR : REDIRECTION ERROR\n", 2); // WA JAWAHIR BADLI HADI B ERROR S7I7
-        g_codes.g_exit_code = 258;
-        g_codes.g_error_code = 1;      
-    }
+	if (token->next->e_type != TOKEN_WORD)
+	{
+		ft_putstr_fd("ERROR : REDIRECTION ERROR\n", 2); // WA JAWAHIR BADLI HADI B ERROR S7I7
+		g_codes.g_exit_code = 258;
+		g_codes.g_error_code = 1;
+	}
 }
 
-void    word_error(t_token *token)
+/*****pour la verification des errors pour les simple mot*/
+void	word_error(t_token *token)
 {
-    char *d;
-    char *D;
-    char *s;
-    char *S;
+	char	*d;
+	char	*s;
 
-    d = ft_strchr(token->value, 'd');
-    s = ft_strchr(token->value, 's');
-    D = ft_strrchr(token->value, 'd');
-    S = ft_strrchr(token->value, 's');
-    
-    if (s && s == S)
-    {
-        ft_putstr_fd("ERROR : UNCLOSED SINGLE QUOTE \n", 2); // WA JAWAHIR BADLI HADI B ERROR S7I7
-        g_codes.g_exit_code = 258;
-        g_codes.g_error_code = 1; 
-    } 
-    if (d && d == D)
-    {
-        ft_putstr_fd("ERROR : UNCLOSED DOUBLE QUOTE \n", 2); // WA JAWAHIR BADLI HADI B ERROR S7I7
-        g_codes.g_exit_code = 258;
-        g_codes.g_error_code = 1; 
-    } 
-}  
-
-void    error_management(t_data *content)
-{
-    t_token *temp;
-
-    temp = content->tokens;
-    while(temp)
-    {
-        if(temp->type == TOKEN_PIPE)
-            pipe_errors(temp);
-        else if (temp->type != TOKEN_WORD)
-            redirection_errors(temp);
-        else
-            word_error(temp);
-        if(g_codes.g_error_code != 0)
-            return ; 
-        temp = temp->next;
-    }
+	d = ft_strchr(token->value, 'd');
+	s = ft_strchr(token->value, 's');
+	if (s && s == ft_strrchr(token->value, 's'))
+	{
+		ft_putstr_fd("ERROR : UNCLOSED SINGLE QUOTE \n", 2); // WA JAWAHIR BADLI HADI B ERROR S7I7
+		g_codes.g_exit_code = 258;
+		g_codes.g_error_code = 1;
+	}
+	if (d && d == ft_strrchr(token->value, 'd'))
+	{
+		ft_putstr_fd("ERROR : UNCLOSED DOUBLE QUOTE \n", 2); // WA JAWAHIR BADLI HADI B ERROR S7I7
+		g_codes.g_exit_code = 258;
+		g_codes.g_error_code = 1;
+	}
 }
 
-void    parsing_part(char *str)
+/******la onction racine de tout les autre fonction des error*/
+void	error_management(t_data *content)
 {
-    t_data  content;
-    
-    content.input = ft_strdup(str); // strdup(str)
-    content.meta_v = meta_data(str);
-    printf("%s\n",content.input);
-    printf("%s\n", content.meta_v);
-    content.tokens = to_tokeniser(content);
+	t_token	*temp;
+
+	temp = content->tokens;
+	while (temp)
+	{
+		if (temp->e_type == TOKEN_PIPE)
+			pipe_errors(temp);
+		else if (temp->e_type != TOKEN_WORD)
+			redirection_errors(temp);
+		else
+			word_error(temp);
+		if (g_codes.g_error_code != 0)
+			return ;
+		temp = temp->next;
+	}
+}
+
+/*la fonction racine de tout les onction de parsing part :)  */
+void	parsing_part(char *str)
+{
+	t_data	content;
+
+	content.input = ft_strdup(str); // strdup(str)
+	content.meta_v = meta_data(str);
+	printf("%s\n", content.input);
+	printf("%s\n", content.meta_v);
+	content.tokens = to_tokeniser(content);
     // while(content.tokens)
     // {
     //     printf("word is %s his meta is %s token is %d\n", content.tokens->word, content.tokens->value, content.tokens->type);
     //     content.tokens = content.tokens->next;
     // }
-    error_management(&content);
-    if (g_codes.g_error_code != 0)
-        return ; 
+	error_management(&content);
+	if (g_codes.g_error_code != 0)
+		return ;
 }
 
-
+/*cette fonction s'occupe au remplissage des token dans une liste double :)*/
 void add_token(t_token **head, t_token *token)
 {
-    t_token *tmp;
+	t_token	*tmp;
 
-    if (head)
-    {
-        if (*head == NULL)
-            *head = token;
-        else
-        {
-            tmp = *head;
-            while (tmp->next)
-                tmp = tmp->next;
-            tmp->next = token;
-            if (token)
-                token->prev = tmp;
-        }
-    }
+	if (head)
+	{
+		if (*head == NULL)
+			*head = token;
+		else
+		{
+			tmp = *head;
+			while (tmp->next)
+				tmp = tmp->next;
+			tmp->next = token;
+			if (token)
+				token->prev = tmp;
+		}
+	}
 }
 
-t_token *to_tokeniser(t_data content)
+/*ces la fonction racine de mon lexer :)*/
+t_token	*to_tokeniser(t_data content)
 {
-    t_lexer *lex;
-    t_token *token;
-    t_token *final;
-    
-    final = NULL;
-    lex = init_lexer(content.input, content.meta_v); /*initialisation de lexer*/
-    token = lexer_get_next_token(lex);
-    add_token(&final, token);
-    while(token != NULL)
-    {
-        token = lexer_get_next_token(lex);
-        add_token(&final, token);
-    }
-    return (final);
+	t_lexer	*lex;
+	t_token	*token;
+	t_token	*final;
+
+	final = NULL;
+	lex = init_lexer(content.input, content.meta_v); /*initialisation de lexer*/
+	token = lexer_get_next_token(lex);
+	add_token(&final, token);
+	while (token != NULL)
+	{
+		token = lexer_get_next_token(lex);
+		add_token(&final, token);
+	}
+	return (final);
 }
 
-void lexer_advance(t_lexer *lexer)
+/*bien sur j'ai besoin d'une fonction pour avancer dans le lexer :)*/
+void	lexer_advance(t_lexer *lexer)
 {
-    if (lexer->c != '\0' && lexer->i < ft_strlen(lexer->contents))
-    {
-        lexer->i += 1;
-        lexer->c = lexer->contents[lexer->i];
-        lexer->c0 = lexer->word[lexer->i];
-    }
+	if (lexer->c != '\0' && lexer->i < ft_strlen(lexer->contents))
+	{
+		lexer->i += 1;
+		lexer->c = lexer->contents[lexer->i];
+		lexer->c0 = lexer->word[lexer->i];
+	}
 }
 
-t_token *lexer_advance_with_token(t_lexer *lexer, t_token *token)
+/*******just pour avancer et retourner mon token :D*****/
+t_token	*lexer_advance_with_token(t_lexer *lexer, t_token *token)
 {
-    lexer_advance(lexer);
-    return token;
+	lexer_advance(lexer);
+	return (token);
 }
 
-void lexer_skip_whitespace(t_lexer *lexer)
+void	lexer_skip_whitespace(t_lexer *lexer)
 {
-    // change this condition avec b pour la forme de meta data 
-    //lexer->c == ' ' || lexer->c == 10 || lexer->c == '\t'
-    while (lexer->c == 'b')
-        lexer_advance(lexer);
+	while (lexer->c == 'b')
+		lexer_advance(lexer);
 }
 
 /*convertire une lettre a un mot :)*/
-char    *lexer_get_current_char_as_string(char  c)
+char    **lexer_get_current_char_as_string(char  c)
 {
     char    *str;
     
@@ -184,7 +185,7 @@ t_token *init_token(int type, char *value, char *word)
     token = ft_calloc(1, sizeof(t_token));
     if(!token)
         return (NULL);
-    token->type = type;
+    token->e_type= type;
     token->value = value;
     token->word = word;
     token->prev = NULL;
