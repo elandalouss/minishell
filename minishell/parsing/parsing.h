@@ -6,12 +6,14 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:06:29 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/09 13:50:46 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/09 16:09:24 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
+# include "../minishell.h"
+
 
 /**cette structure pour garder le derniere exit code :)*****/
 typedef struct s_global
@@ -43,9 +45,8 @@ typedef struct s_token
 		TOKEN_DWRITE,
 		TOKEN_PIPE,
 	}	e_type;
-	char	*value;// in meta
-	char	*word;// original
-	//char	*
+	char			*value;// in meta
+	char			*word;// original
 	struct s_token	*prev;
 	struct s_token	*next;
 }	t_token;
@@ -58,14 +59,18 @@ typedef struct s_data
 	t_token	*tokens;
 }	t_data;
 
-t_global	g_codes;
-t_token	*lexer_get_next_token(t_lexer *lexer);
-void	lexer_skip_whitespace(t_lexer *lexer);
-void	parsing_part(char *str);
-void	qouted_str(char *str, unsigned int *i, char c);
-char	*meta_data(char *str);
-t_token	*to_tokeniser(t_data content);
-t_lexer	*init_lexer(char *contents, char *meta_v);
-void	error_management(t_data *content);
+//-------------
+t_global		g_codes;
+t_token			*lexer_get_next_token(t_lexer *lexer);
+void			lexer_skip_whitespace(t_lexer *lexer);
+void			parsing_part(char *str);
+void			qouted_str(char *str, unsigned int *i, char c);
+char			*meta_data(char *str);
+t_token			*to_tokeniser(t_data content);
+t_lexer			*init_lexer(char *contents, char *meta_v);
+void			error_management(t_data *content);
+void    		my_env(char **env, char *to_add);
+unsigned int	env_len(char **env);
+
 
 #endif

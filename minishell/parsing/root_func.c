@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:09:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/08 22:15:07 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/09 16:16:14 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,8 @@ void	ft_free_list(t_token **token)
 	{
 		temp = *token;
 		*token = (*token)->next;
-		if (temp->value)
-			free(temp->value);
-		if (temp->value)
-			free(temp->word);
+		free(temp->value);
+		free(temp->word);
 		free(temp);
 	}
 	*token = 0;
@@ -105,9 +103,22 @@ void	ft_free_content(t_data *content)
 			free(content->input);
 		if(content->meta_v)
 			free(content->meta_v);
-	content = 0;
 }
 
+void	heredoc_racine(t_token	*tokens)
+{
+	pid_t id;
+	
+	
+	id = fork();
+	if(id == 0)
+	{
+		//heredoc
+	}
+	else
+		wait()
+	
+}
 
 /*la fonction racine de tout les onction de parsing part :)  */
 void	parsing_part(char *str)
@@ -117,7 +128,13 @@ void	parsing_part(char *str)
 	
 	content.input = ft_strdup(str); // strdup(str)  //allocation par strdup
 	content.meta_v = meta_data(str);
-	
+	int i = 0;
+	// while(g_codes.g_env[i])
+	// {
+	// 	printf("%s\n", g_codes.g_env[i]);
+	// 	i++;
+	// }
+	//(void)env;
 	//printf("%s\n", content.input);
 	//printf("%s\n", content.meta_v);
 	content.tokens = to_tokeniser(content);
@@ -127,11 +144,15 @@ void	parsing_part(char *str)
     //     content.tokens = content.tokens->next;
     // }
 	error_management(&content);
+	heredoc_racine(content.tokens);
+	
+	
 	ft_free_list(&content.tokens);// tu dois les retourner 
 	ft_free_content(&content);// je penses que tu vas utiliser cette variable apres :)
 	if (g_codes.g_error_code != 0)
 		return ;
 }
+
 
 /*cette fonction s'occupe au remplissage des token dans une liste double :)*/
 void add_token(t_token **head, t_token *token)
@@ -242,7 +263,6 @@ t_token	*lexer_collect_id(t_lexer	*lexer)
 		w = lexer_get_current_char_as_string(lexer->c0);
 		value = ft_strjoin(value, v);
 		word = ft_strjoin(word, w);
-	
 		lexer_advance(lexer);
 		free(w);
 		free(v);

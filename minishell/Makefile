@@ -2,6 +2,7 @@ NAME = minishell
 
 SRCS =  main.c \
 		parsing/root_func.c \
+		parsing/env_f.c \
 
 OBJS = $(SRCS:.c=.o)
 
