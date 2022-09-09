@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:09:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/08 02:35:22 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/08 22:15:07 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,44 @@ void	error_management(t_data *content)
 	}
 }
 
+void	ft_free_list(t_token **token)
+{
+	t_token	*temp;
+
+	while (*token)
+	{
+		temp = *token;
+		*token = (*token)->next;
+		if (temp->value)
+			free(temp->value);
+		if (temp->value)
+			free(temp->word);
+		free(temp);
+	}
+	*token = 0;
+}
+
+void	ft_free_content(t_data *content)
+{
+	if (content->input)
+			free(content->input);
+		if(content->meta_v)
+			free(content->meta_v);
+	content = 0;
+}
+
+
 /*la fonction racine de tout les onction de parsing part :)  */
 void	parsing_part(char *str)
 {
 	t_data	content;
 
-	content.input = ft_strdup(str); // strdup(str)
+	
+	content.input = ft_strdup(str); // strdup(str)  //allocation par strdup
 	content.meta_v = meta_data(str);
-	printf("%s\n", content.input);
-	printf("%s\n", content.meta_v);
+	
+	//printf("%s\n", content.input);
+	//printf("%s\n", content.meta_v);
 	content.tokens = to_tokeniser(content);
     // while(content.tokens)
     // {
@@ -98,6 +127,8 @@ void	parsing_part(char *str)
     //     content.tokens = content.tokens->next;
     // }
 	error_management(&content);
+	ft_free_list(&content.tokens);// tu dois les retourner 
+	ft_free_content(&content);// je penses que tu vas utiliser cette variable apres :)
 	if (g_codes.g_error_code != 0)
 		return ;
 }
@@ -131,14 +162,16 @@ t_token	*to_tokeniser(t_data content)
 	t_token	*final;
 
 	final = NULL;
-	lex = init_lexer(content.input, content.meta_v); /*initialisation de lexer*/
+	lex = init_lexer(content.input, content.meta_v); /*initialisation de lexer*/    // je doit free tout ces outil :)
 	token = lexer_get_next_token(lex);
 	add_token(&final, token);
 	while (token != NULL)
 	{
+		//free(token);
 		token = lexer_get_next_token(lex);
 		add_token(&final, token);
 	}
+	free(lex);
 	return (final);
 }
 
@@ -167,160 +200,163 @@ void	lexer_skip_whitespace(t_lexer *lexer)
 }
 
 /*convertire une lettre a un mot :)*/
-char    **lexer_get_current_char_as_string(char  c)
+char	*lexer_get_current_char_as_string(char  c)
 {
-    char    *str;
-    
-    str = calloc(2, sizeof(char));
-    str[0] = c;
-    str[1] = '\0';
-    return str;
+	char	*str;
+
+	str = calloc(2, sizeof(char));
+	str[0] = c;
+	str[1] = '\0';
+	return (str);
 }
 
 /*initialisation de token struct ****/
-t_token *init_token(int type, char *value, char *word)
+t_token	*init_token(int type, char *value, char *word)
 {
-    t_token *token;
-    
-    token = ft_calloc(1, sizeof(t_token));
-    if(!token)
-        return (NULL);
-    token->e_type= type;
-    token->value = value;
-    token->word = word;
-    token->prev = NULL;
-    token->next = NULL;
-    return token;
+	t_token	*token;
+
+	token = ft_calloc(1, sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->e_type = type;
+	token->value = value;
+	token->word = word;
+	token->prev = NULL;
+	token->next = NULL;
+	return (token);
 }
 
 /*collecter le mot dans un seul token :)*/
-t_token *lexer_collect_id(t_lexer   *lexer)
+t_token	*lexer_collect_id(t_lexer	*lexer)
 {
-    char    *value; 
-    char    *word;
-    char    *v;
-    char    *w;
+	char	*value;
+	char	*word;
+	char	*v;
+	char	*w;
 
-    value = ft_strdup("");
-    word = ft_strdup("");
-    while (ft_strchr("bpwr" ,lexer->c) == 0)
-    {// this part est repeter dans une fonction
-        v = lexer_get_current_char_as_string(lexer->c);
-        w = lexer_get_current_char_as_string(lexer->c0);
-        value = ft_strjoin(value, v);
-        word = ft_strjoin(word, w);
-        lexer_advance(lexer);
-    }
-    return init_token(TOKEN_WORD, value, word);// preparer votre structure 
+	value = ft_strdup("");
+	word = ft_strdup("");
+	while (ft_strchr("bpwr", lexer->c) == 0)
+	{// this part est repeter dans une fonction
+		v = lexer_get_current_char_as_string(lexer->c);
+		w = lexer_get_current_char_as_string(lexer->c0);
+		value = ft_strjoin(value, v);
+		word = ft_strjoin(word, w);
+	
+		lexer_advance(lexer);
+		free(w);
+		free(v);
+	}
+	return (init_token(TOKEN_WORD, value, word));// preparer votre structure 
 }
 
 /*goted string :D*/
-t_token *lexer_collect_redirection(t_lexer *lexer, int type)
+t_token	*lexer_collect_redirection(t_lexer *lexer, int type)
 {
-    char *value;
-    char *word;
-    
-    value = ft_strdup("..");
-    word = ft_strdup("..");
-    value[0] = lexer->c;
-    word[0] = lexer->c0;
-    if (lexer->contents[lexer->i] == lexer->contents[lexer->i + 1])
-    {
-        lexer_advance(lexer);
-        value[1] = lexer->c;
-        word[1] = lexer->c0;
-        type++;
-    }
-    else
-    {
-        value[1] = '\0';
-        word[1] = '\0';
-    }
-    lexer_advance(lexer);
-    return init_token(type, value, word);
+	char	*value;
+	char	*word;
+
+	value = ft_strdup("..");
+	word = ft_strdup("..");
+	value[0] = lexer->c;
+	word[0] = lexer->c0;
+	if (lexer->contents[lexer->i] == lexer->contents[lexer->i + 1])
+	{
+		lexer_advance(lexer);
+		value[1] = lexer->c;
+		word[1] = lexer->c0;
+		type++;
+	}
+	else
+	{
+		value[1] = '\0';
+		word[1] = '\0';
+	}
+	lexer_advance(lexer);
+	return (init_token(type, value, word));
 }
 
 /****le coeur de votre lexer :)*****/
-t_token *lexer_get_next_token(t_lexer *lexer)
+t_token	*lexer_get_next_token(t_lexer *lexer)
 {
-    while (lexer->c != '\0' && lexer->i < ft_strlen(lexer->contents))
-    {
-        if (lexer->c == 'b')
-            lexer_skip_whitespace(lexer);
-        //pipe token
-        if (lexer->c == 'p')
-            return (lexer_advance_with_token(lexer, init_token(TOKEN_PIPE, 
-                lexer_get_current_char_as_string(lexer->c), lexer_get_current_char_as_string(lexer->c0))));
-        else if (lexer->c == 'r')
-            return (lexer_collect_redirection(lexer, TOKEN_READ));
-        else if (lexer->c == 'w')
-            return (lexer_collect_redirection(lexer, TOKEN_WRITE));
-        /*word :D*/
-        else 
-            return lexer_collect_id(lexer);
-    }
-    return (NULL);
+	while (lexer->c != '\0' && lexer->i < ft_strlen(lexer->contents))
+	{
+		if (lexer->c == 'b')
+			lexer_skip_whitespace(lexer);
+		if (lexer->c == 'p')
+			return (lexer_advance_with_token(lexer, init_token(TOKEN_PIPE,
+						lexer_get_current_char_as_string(lexer->c),
+						lexer_get_current_char_as_string(lexer->c0))));
+		else if (lexer->c == 'r')
+			return (lexer_collect_redirection(lexer, TOKEN_READ));
+		else if (lexer->c == 'w')
+			return (lexer_collect_redirection(lexer, TOKEN_WRITE));
+		else
+			return (lexer_collect_id(lexer));
+	}
+	return (NULL);
 }
 
 /*initialisation de lexer*/
-t_lexer *init_lexer(char *contents, char *meta_v)
+t_lexer	*init_lexer(char *contents, char *meta_v)
 {
-    t_lexer *lexer; 
-    lexer = ft_calloc(1, sizeof(t_lexer));
-    if (!lexer)
-        return (NULL);
-    lexer->contents = meta_v;
-    lexer->word = contents;
-    lexer->i = 0;
-    lexer->c = meta_v[lexer->i];
-    lexer->c0 = contents[lexer->i];
-    return lexer;
+	t_lexer	*lexer;
+
+	lexer = ft_calloc(1, sizeof(t_lexer));
+	if (!lexer)
+		return (NULL);
+	lexer->contents = meta_v;
+	lexer->word = contents;
+	lexer->i = 0;
+	lexer->c = meta_v[lexer->i];
+	lexer->c0 = contents[lexer->i];
+	return (lexer);
 }
 
-void    qouted_str(char *str, unsigned int  *i, char c)
+void	qouted_str(char *str, unsigned int  *i, char c)
 {
-    char    n;
+	char	n;
 
-    n = 's';
-    if (c == '"')
-        n = 'd';
-    str[*i] = n;
-    (*i)++;
-    while (str[*i] && str[*i] != c)
-    {
-        str[*i] = 'q';
-        *i += 1;
-    }
-    if (str[*i] == c)
-        str[*i] = n;
-    else
-        *i -= 1;
+	n = 's';
+	if (c == '"')
+		n = 'd';
+	str[*i] = n;
+	(*i)++;
+	while (str[*i] && str[*i] != c)
+	{
+		str[*i] = 'q';
+		*i += 1;
+	}
+	if (str[*i] == c)
+		str[*i] = n;
+	else
+		*i -= 1;
 }
 
-char    *meta_data(char  *str)
+char	*meta_data(char  *str)
 {
-    unsigned int i;
+	unsigned int	i;
 
-    i = 0;
-    /*
-    wa jawahir tkayssi matbadlich 
-    f string gadi wa7ed jdid okhali lakhor tkhadmi bih menba3d
-    */
-    while (str[i])
-    {
-        if (str[i] == '<')
-            str[i] = 'r';
-        else if (str[i] == '>')
-            str[i] = 'w';
-        else if (str[i] == '|')
-            str[i] = 'p';
-        else if (str[i] == '\n' || str[i] == ' ' || str[i] == '\t')
-           str[i] = 'b';  
-        else if (str[i] == '\"' || str[i] == '\'')
-            qouted_str(str, &i, str[i]);
-        else
-            str[i] = 'u';
-        i++;
-    }
-    return (str);
+	i = 0;
+	/*
+	wa jawahir tkayssi matbadlich 
+	f string gadi wa7ed jdid okhali lakhor tkhadmi bih menba3d
+	*/
+	while (str[i])
+	{
+		if (str[i] == '<')
+			str[i] = 'r';
+		else if (str[i] == '>')
+			str[i] = 'w';
+		else if (str[i] == '|')
+			str[i] = 'p';
+		else if (str[i] == '\n' || str[i] == ' ' || str[i] == '\t')
+			str[i] = 'b';
+		else if (str[i] == '\"' || str[i] == '\'')
+			qouted_str(str, &i, str[i]);
+		else
+			str[i] = 'u';
+		i++;
+	}
+	return (str);
 }

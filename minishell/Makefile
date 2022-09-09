@@ -7,7 +7,7 @@ OBJS = $(SRCS:.c=.o)
 
 CC = @cc
 
-CFLAGS = -Wall -Wextra -Werror -I /Users/$(USER)/readline/ -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I /Users/$(USER)/readline/ -g #-fsanitize=address
 
 RM = rm -f
 
@@ -18,6 +18,7 @@ make_libft:
 	@printf "\n\033[1;33m**** libft Compiled Succesfully ! ****\033[0m\n"
 
 $(NAME):	$(OBJS) make_libft
+	@make -C libft clean
 	$(CC) $(CFLAGS) -lreadline -L /Users/$(USER)/readline $(OBJS) ./libft/libft.a -o $(NAME)
 	@printf "\033[1;33m****Minishell compiled Succesfully ! ****\033[0m\n"
     
