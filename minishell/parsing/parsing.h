@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:06:29 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/09 12:31:24 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/09 13:50:46 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@
 /**cette structure pour garder le derniere exit code :)*****/
 typedef struct s_global
 {
-	int	g_error_code;
-	int	g_exit_code;
+	int		g_error_code;
+	int		g_exit_code;
+	char	**g_env;
 }	t_global;
 
 /******* lexer data********/
