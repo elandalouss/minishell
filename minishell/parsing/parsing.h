@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:06:29 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/09 16:09:24 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/09 19:47:26 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_token
 	}	e_type;
 	char			*value;// in meta
 	char			*word;// original
+	char			*new_word;// new word after expanding the original
 	struct s_token	*prev;
 	struct s_token	*next;
 }	t_token;

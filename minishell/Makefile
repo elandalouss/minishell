@@ -8,7 +8,7 @@ OBJS = $(SRCS:.c=.o)
 
 CC = @cc
 
-CFLAGS = -Wall -Wextra -Werror -I /Users/$(USER)/readline/ -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I /Users/$(USER)/readline/ -g -fsanitize=address
 
 RM = rm -f
 
