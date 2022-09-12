@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:06:29 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/10 16:31:27 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/11 18:09:56 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,13 +101,18 @@ void			ft_free_content(t_data *content);
 /*******HERE_DOC :D*********/
 //herdoc_func
 unsigned int	check_number(t_token *tokens);
-char			*get_file_name(void);
+char			*get_file_name(int i);
 void			remplissage_doc(int flag, int fd, char *limiter);
-void			preparation_docv(int expand_flag, char	*limiter);
+void			preparation_docv(int expand_flag, char	*limiter, int i);
 char			check_expand(char *name, char *meta, t_token *token);
 void			open_herdoc(t_token *token);
 void			open_herdoc(t_token *token);
 void			here_docs(t_token *tokens);
 void			heredoc_racine(t_token	*tokens);
+
+
+
+//heho
+char			*ft_extrajoin(char *s1, char *s2, char flag);
 
 #endif

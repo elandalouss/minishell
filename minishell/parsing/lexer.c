@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:09:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/10 16:09:01 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/11 18:26:34 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,23 @@ void	parsing_part(char *str)
 	//printf("%s\n", content.input);
 	//printf("%s\n", content.meta_v);
 	content.tokens = to_tokeniser(content);
-    // while(content.tokens)
-    // {
-    //     printf("word is %s his meta is %s token is %d\n", content.tokens->word, content.tokens->value, content.tokens->type);
-    //     content.tokens = content.tokens->next;
-    // }
 	error_management(&content);
 	if (g_codes.g_error_code != 0)
 		return ;
+	// while(content.tokens)
+    // {
+    //     printf("word is %s his meta is %s token is %d\n", content.tokens->word, content.tokens->value, content.tokens->e_type);
+    //     content.tokens = content.tokens->next;
+    // }
 	heredoc_racine(content.tokens);
 	//if (g_codes.g_error_code != 0)
 	//	return ;
 	
+    while(content.tokens)
+    {
+        printf("word is %s his meta is %s token is %d\n", content.tokens->word, content.tokens->value, content.tokens->e_type);
+        content.tokens = content.tokens->next;
+    }
 	ft_free_list(&content.tokens);// tu dois les retourner 
 	ft_free_content(&content);// je penses que tu vas utiliser cette variable apres :)
 }
@@ -156,11 +161,9 @@ t_token	*lexer_collect_id(t_lexer	*lexer)
 	{// this part est repeter dans une fonction
 		v = lexer_get_current_char_as_string(lexer->c);
 		w = lexer_get_current_char_as_string(lexer->c0);
-		value = ft_strjoin(value, v);
-		word = ft_strjoin(word, w);
+		value = ft_extrajoin(value, v, 3);
+		word = ft_extrajoin(word, w, 3);
 		lexer_advance(lexer);
-		free(w);
-		free(v);
 	}
 	return (init_token(TOKEN_WORD, value, word));// preparer votre structure 
 }
@@ -239,7 +242,10 @@ void	qouted_str(char *str, unsigned int  *i, char c)
 	(*i)++;
 	while (str[*i] && str[*i] != c)
 	{
-		str[*i] = 'q';
+		if (n == 'd' && str[*i] == '$')
+			str[*i] = 'x'; 				
+		else
+			str[*i] = 'q';
 		*i += 1;
 	}
 	if (str[*i] == c)
@@ -269,6 +275,8 @@ char	*meta_data(char  *str)
 			str[i] = 'b';
 		else if (str[i] == '\"' || str[i] == '\'')
 			qouted_str(str, &i, str[i]);
+		else if (str[i] == '$')
+			str[i] = 'x';
 		else
 			str[i] = 'u';
 		i++;
