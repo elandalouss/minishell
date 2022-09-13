@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 06:12:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/13 15:25:51 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/13 16:14:19 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,15 +120,25 @@ void remove_qoutes(t_token *tokens)
 }
 
 
+// void	to_expand(char	*meta, char	*word, char *i)
+// {
+// 	if (i[1] == 'u')
+// 		expand ()
+// }
+
 
 void	expand_str(t_token *tokens)
 {
+	char	*i;
+	
 	while (tokens)
 	{
 		//printf("++++++++++++++++++++++++++++++word is %s his meta is %s token is %d\n", tokens->word, tokens->value, tokens->e_type);
-		if (ft_strchr(tokens->value, 'x'))
-			to_expand()
-			//printf("to exppand word is %s his meta is %s token is %d\n", tokens->word, tokens->value, tokens->e_type);//expand_2();
+		i = ft_strchr(tokens->value, 'x');	
+		if (i)
+			tokens->new_word = expand(tokens->word, '$');
+		printf("to exppand word is %s his meta is %s token is %d\n", tokens->word, tokens->value, tokens->e_type);//expand_2();
+		printf("%s\n", tokens->new_word);
 		tokens = tokens->next;
 	}
 }
