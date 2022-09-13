@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:06:29 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/11 18:09:56 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/13 10:13:01 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,10 +109,18 @@ void			open_herdoc(t_token *token);
 void			open_herdoc(t_token *token);
 void			here_docs(t_token *tokens);
 void			heredoc_racine(t_token	*tokens);
+char			*expand(char	*str, char c);
+char			*check_word_in_env(char	*word);
 
 
 
-//heho
+//NEW LIBFT-FUNCTION
 char			*ft_extrajoin(char *s1, char *s2, char flag);
 
+/**removing qoutes step :)**/
+
+void    qouted_and_expand(t_token *tokens);
+void    remove_qoutes(t_token *tokens);
+//char	*remove_qt(char	*meta, char	*word);
+//char	*qt(char	*word, int i);
 #endif

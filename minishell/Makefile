@@ -6,12 +6,13 @@ SRCS =  main.c \
 		parsing/error_manangement.c \
 		parsing/free_func.c \
 		parsing/herdoc_func.c \
+		parsing/qouted_str.c \
 
 OBJS = $(SRCS:.c=.o)
 
 CC = @cc
 
-CFLAGS = -Wall -Wextra -Werror -I /Users/$(USER)/readline/ -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I /Users/$(USER)/readline/ -g -fsanitize=address
 
 RM = rm -f
 
