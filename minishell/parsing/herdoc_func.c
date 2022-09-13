@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 15:52:20 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/12 14:46:07 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/12 18:14:04 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	position(char *str, char c)
 	return i;
 }
 
+// unused function :P
 int	position_2(char *str, int i)
 {
 	while(str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
@@ -87,11 +88,9 @@ char	*expand(char	*str, char c)
 	i = position(str, c);
 	if (str[i] == '\0')
 		return (ft_substr(str, 0, ft_strlen(str) + 1));
-	// if (!ft_isalnum(str[i + 1]) || str[i + 1] != '-' || str[i + 1] != '_')
-	// 	return (str);// car il retourne un mot special
 	if (i > 0)
 		prefix = ft_substr(str, 0, i);
-	printf("position %d and the prefix => |%s|\n", i, prefix);
+	//printf("position %d and the prefix => |%s|\n", i, prefix);
 	word = ft_strdup("");
 	//printf("--%s---prefix\n", prefix);
 	if (str[i] && (ft_isalpha(str[i + 1]) || str[i + 1] == '_'))
@@ -109,20 +108,20 @@ char	*expand(char	*str, char c)
 	}
 	else
 	{
-		printf("hello first recursion call place\n");
+		//printf("hello first recursion call place\n");
 		prefix = ft_extrajoin(prefix, "$", 1);
 		suffix = expand(str + (i + 1), '$');
 	}
 	if (flag)
 	{
-		printf("hello second recursion call place\n");
+		//printf("hello second recursion call place\n");
 		suffix = expand(str + i, '$');
 	}
 	
-	printf("the word => |%s|\n", word);
-	printf("the suffix => |%s|\n", suffix);
+	//printf("the word => |%s|\n", word);
+	//printf("the suffix => |%s|\n", suffix);
 	word = check_word_in_env(word);
-	printf("the word after expantion => |%s|\n", word);
+	//printf("the word after expantion => |%s|\n", word);
 	if (!prefix)
 		prefix = ft_strdup("");
 	if (!suffix)
@@ -166,8 +165,7 @@ char	*get_file_name(int i)
 	file[16] = c[10];
 	file[17] = c[11];
 //	free(c);
-	//
-	printf("--a--%s\n",file);
+	//printf("--a--%s\n",file);
 	return (file);
 }
 
@@ -192,6 +190,8 @@ void	remplissage_doc(int flag, int fd, char *limiter)
 		free(str);
 		str = readline(">");
 	}
+	if (str)
+		free(str);
 }
 
 /*****ici j'ouvre le fichier et je pass au remplissage ******/
@@ -210,6 +210,7 @@ void	preparation_docv(int expand_flag, char	*limiter, int i)
 	}
 	remplissage_doc(expand_flag, fd, limiter);
 	close (fd);
+	free(file);
 	// making_file_name(name);
 }
 
@@ -279,7 +280,7 @@ void	here_docs(t_token *tokens)
 		//g_codes.g_exit_code = 2;
 		exit(1);
 	}
-	else if (holder == 0)
+	else if (holder == 0)// j'ai deja verifier au debut :D
 		return ;
 	// mtn tu dois demarer les heredoc
 	open_herdoc(tokens);
@@ -318,6 +319,7 @@ void	heredoc_racine(t_token	*tokens)
 		{
 			if (temp->e_type == TOKEN_DREAD)
 			{
+				free(temp->next->word);
 				temp->next->word = get_file_name(i);
 				i++;
 			}

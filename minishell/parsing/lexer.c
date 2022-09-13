@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:09:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/11 18:26:34 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/12 17:47:40 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ void	parsing_part(char *str)
 	//if (g_codes.g_error_code != 0)
 	//	return ;
 	
-    while(content.tokens)
-    {
-        printf("word is %s his meta is %s token is %d\n", content.tokens->word, content.tokens->value, content.tokens->e_type);
-        content.tokens = content.tokens->next;
-    }
+    // while(content.tokens)
+    // {
+    //     printf("word is %s his meta is %s token is %d\n", content.tokens->word, content.tokens->value, content.tokens->e_type);
+    //     content.tokens = content.tokens->next;
+    // }
 	ft_free_list(&content.tokens);// tu dois les retourner 
 	ft_free_content(&content);// je penses que tu vas utiliser cette variable apres :)
 }
