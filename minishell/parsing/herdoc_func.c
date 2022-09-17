@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 15:52:20 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/12 18:14:04 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/17 17:13:40 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,33 +56,44 @@ char	*check_word_in_env(char	*word)
 	return (NULL);
 }
 
+void	extra_free(char *s1, char *s2, char flag)
+{
+	if (flag == 1 || flag == 3)
+		free (s1);
+	if (flag == 2 || flag == 3)
+		free (s2);
+}
+
 char	*ft_extrajoin(char *s1, char *s2, char flag)
 {
 	char	*final;
 
 	if (!s1 && !s2)
-		return (ft_strdup(""));
+		return (NULL);
 	if (!s1)
-		return (ft_strdup(s2));
+	{
+		final = ft_strdup(s2);
+		extra_free(s1, s2, flag);
+		return (final);
+	}
 	if (!s2)
-		return (ft_strdup(s1));
+	{
+		final = ft_strdup(s1);
+		extra_free(s1, s2, flag);
+		return (final);
+	}
 	final = ft_strjoin(s1, s2);
-	if (flag == 1 || flag == 3)
-		free (s1);
-	if (flag == 2 || flag == 3)
-		free (s2);
+	extra_free(s1, s2, flag);
 	return (final);
 }
 
-char	*expand(char	*str, char c)
+char	*expand(char	*str, char c, char flag)
 {
 	char	*prefix;
 	char	*suffix;
 	char	*word;
 	int		i;
-	char	flag;
 
-	flag = 0;
 	prefix = NULL;
 	suffix = NULL;
 	i = position(str, c);
@@ -90,9 +101,7 @@ char	*expand(char	*str, char c)
 		return (ft_substr(str, 0, ft_strlen(str) + 1));
 	if (i > 0)
 		prefix = ft_substr(str, 0, i);
-	//printf("position %d and the prefix => |%s|\n", i, prefix);
 	word = ft_strdup("");
-	//printf("--%s---prefix\n", prefix);
 	if (str[i] && (ft_isalpha(str[i + 1]) || str[i + 1] == '_'))
 	{
 		suffix = ft_strdup(" ");
@@ -100,7 +109,7 @@ char	*expand(char	*str, char c)
 		while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
 		{
 			*suffix = str[i];
-			word = ft_extrajoin(word, suffix, 1);
+			word = ft_extrajoin(word, suffix, FREE_FIRST);
 			i++;
 		}
 		free(suffix);
@@ -108,29 +117,14 @@ char	*expand(char	*str, char c)
 	}
 	else
 	{
-		//printf("hello first recursion call place\n");
-		prefix = ft_extrajoin(prefix, "$", 1);
-		suffix = expand(str + (i + 1), '$');
+		prefix = ft_extrajoin(prefix, "$", FREE_FIRST);
+		suffix = expand(str + (i + 1), '$', 0);
 	}
 	if (flag)
-	{
-		//printf("hello second recursion call place\n");
-		suffix = expand(str + i, '$');
-	}
-	
-	//printf("the word => |%s|\n", word);
-	//printf("the suffix => |%s|\n", suffix);
+		suffix = expand(str + i, '$', 0);
 	word = check_word_in_env(word);
-	//printf("the word after expantion => |%s|\n", word);
-	if (!prefix)
-		prefix = ft_strdup("");
-	if (!suffix)
-		suffix = ft_strdup("");
-	if (!word)
-		word = ft_strdup("");
-	
-	word = ft_extrajoin(prefix, word, 3);
-	word = ft_extrajoin(word, suffix, 3);
+	word = ft_extrajoin(prefix, word, FREE_ALL);
+	word = ft_extrajoin(word, suffix, FREE_ALL);
 	return (word);
 }
 
@@ -182,10 +176,10 @@ void	remplissage_doc(int flag, int fd, char *limiter)
 		if (flag && ft_strchr(str, '$'))
 		{
 			tmp = str;
-			str = expand(str, '$');
+			str = expand(str, '$', 0);
 			free (tmp);
 		}
-		//printf("----%s\n", str);
+		printf("----%s\n", str);
 		ft_putendl_fd(str, fd);
 		free(str);
 		str = readline(">");
@@ -278,13 +272,23 @@ void	here_docs(t_token *tokens)
 		printf("minishell : maximum here-document count exceeded\n"); //WA JAWAHIR KHEDMO B FT_PUTSTR_FD BASH TKETBI F 2
 		//g_codes.g_error_code = 2; // no need :)
 		//g_codes.g_exit_code = 2;
-		exit(1);
+		exit(16);
 	}
 	else if (holder == 0)// j'ai deja verifier au debut :D
 		return ;
 	// mtn tu dois demarer les heredoc
 	open_herdoc(tokens);
 	exit(0);
+}
+
+
+void	handler(int code)
+{
+	(void)code;
+	write (1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 /*ces la fonction racine de heredocs ou je cree un nouveau process***/
@@ -299,20 +303,43 @@ void	heredoc_racine(t_token	*tokens)
 		return ;
 	id = fork();
 	if (id == 0)
+	{
+		signal(SIGINT, SIG_DFL);
 		here_docs(tokens);
+	}
 	else
 	{
-		waitpid(id, &status, 0);
-		//printf("%d\n", status);
+		signal(SIGINT, SIG_IGN);
+		if (waitpid(id, &status, 0) < 0)
+		{
+			perror("minishell: waitpid:");
+			g_codes.g_error_code = 1;
+			g_codes.g_exit_code = 1;
+			return ;
+		}
 		if (WIFEXITED(status))
 		{
-			if (WEXITSTATUS(status) == 1)
+			if (WEXITSTATUS(status) == 16)
 				exit(2);
+			else if (WEXITSTATUS(status) == 1)
+			{
+				g_codes.g_exit_code = 1;
+				g_codes.g_error_code = 1;
+				return ;
+			}
 		}
 		else if (WIFSIGNALED(status))
 		{
-			;//hnaya blan heredoc m3a signal
+			if (WTERMSIG(status) == 2)
+			{
+				ft_putstr_fd("\n", 2);
+				g_codes.g_error_code = 1;
+				g_codes.g_exit_code = 1;
+				return ;
+			}
+			//hnaya blan heredoc m3a signal
 		}
+		signal(SIGINT, handler);
 		temp = tokens;
 		i = 0;
 		while(temp)

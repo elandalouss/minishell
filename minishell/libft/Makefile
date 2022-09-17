@@ -6,7 +6,7 @@
 #    By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/29 21:20:25 by jchennak          #+#    #+#              #
-#    Updated: 2022/07/28 13:37:38 by jchennak         ###   ########.fr        #
+#    Updated: 2022/09/15 18:30:50 by jchennak         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = libft.a
 
 CC = @cc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 SRCF = ft_strdup.c \
 	  ft_strjoin.c \

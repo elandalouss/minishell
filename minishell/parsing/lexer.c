@@ -6,17 +6,69 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:09:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/13 15:11:00 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/17 18:07:55 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+// void	redirection(t_token *tokens)
+// {
+// 	int	in_filefd;
+// 	int	out_filefd;
 
+// 	while (tokens)
+// 	{
+// 		if (tokens->e_type >= TOKEN_READ)
+// 		{
+// 			if (tokens->next->e_type == TOKEN_RDIR_AMBIGU)
+// 				;
+// 		}
+// 		tokens = tokens->next;
+// 	}
+// }
+
+int	number_of_pipes(t_token *tokens)
+{
+	t_token	*temp;
+	int		i;
+	
+	temp = tokens;
+	i = 0;
+	while (temp)
+	{
+		if (temp->e_type == TOKEN_PIPE)
+			i++;		
+		temp = temp->next;	
+	}
+	return (i);
+}
+
+t_cmd	*list_init(t_token *tokens)
+{
+	int	i;
+	t_cmd	*head;
+	t_cmd	*temp;
+
+	head = NULL;
+	i = number_of_pipes(tokens);
+	i++;
+	while (i > 0)
+	{
+		temp = ft_calloc(1, sizeof(t_cmd));
+		temp->index = i - 1;
+		temp->prev = NULL;
+		temp->next = head;
+		head = temp;
+		i--;
+	}
+	return (head);
+}
 /*la fonction racine de tout les fonction de parsing part :)  */
 void	parsing_part(char *str)
 {
 	t_data	content;
+	t_cmd	*cmds_line;
 
 	
 	content.input = ft_strdup(str); // strdup(str)  //allocation par strdup
@@ -28,9 +80,15 @@ void	parsing_part(char *str)
 	// 	i++;
 	// }
 	//(void)env;
-	//printf("%s\n", content.input);
-	//printf("%s\n", content.meta_v);
+	// printf("|%s|\n", content.input);
+	// printf("|%s|\n", content.meta_v);
 	content.tokens = to_tokeniser(content);
+	if (content.tokens == NULL)
+	{
+		ft_free_content(&content);// je penses que tu vas utiliser cette variable apres :)
+		g_codes.g_error_code = 1;
+		return ;
+	}
 	error_management(&content);
 	if (g_codes.g_error_code != 0)
 		return ;// i guess u need free list and content :)
@@ -40,15 +98,46 @@ void	parsing_part(char *str)
     //     content.tokens = content.tokens->next;
     // }
 	heredoc_racine(content.tokens);
-	qouted_and_expand(content.tokens);
+	if (g_codes.g_error_code != 0)
+		return ;// i guess u need free list and content :)
+	removing_qoutes_and_expand(content.tokens);
+	if (g_codes.g_error_code != 0)
+		return ;// i guess u need free list and content :)
+
+	cmds_line = list_init(content.tokens);//function the creat the final linked list
+	while (cmds_line)
+	{
+		printf("%d cmd line \n", cmds_line->index);
+		cmds_line = cmds_line->next;
+	}
+	//fuction that fill the final lked list fds and av9
+
+
+		
+// 	t_token *temp;
+// 	temp = content.tokens;
+//    while(temp)
+//    {
+//        printf("word is |%s| \n", temp->word);
+//         temp = temp->next;
+//    }
+// 	temp = content.tokens->next;
+//     content.tokens = remove_list(temp, content.tokens);
+// 	 printf("==================\n");
+// 	temp = content.tokens;
+//    while(temp)
+//    {
+//        printf("word is |%s|       type %d\n", temp->word, temp->e_type);
+//         temp = temp->next;
+//    }
 	//if (g_codes.g_error_code != 0)
-	//	return ;
-	
-    // // while(content.tokens)
-    // // {
-    // //     printf("word is %s his meta is %s token is %d and new_word is  %s\n", content.tokens->word, content.tokens->value, content.tokens->e_type, content.tokens->new_word);
-    // //     content.tokens = content.tokens->next;
+	//	return ;	
+    // while (content.tokens)
+    // {
+    //     printf("word is %s his meta is %s token is %d and new_word is  %s\n", content.tokens->word, content.tokens->value, content.tokens->e_type, content.tokens->old_word);
+    //     content.tokens = content.tokens->next;
     // }
+	
 	ft_free_list(&content.tokens);// tu dois les retourner 
 	ft_free_content(&content);// je penses que tu vas utiliser cette variable apres :)
 }
@@ -127,7 +216,6 @@ char	*lexer_get_current_char_as_string(char  c)
 
 	str = calloc(2, sizeof(char));
 	str[0] = c;
-	str[1] = '\0';
 	return (str);
 }
 
@@ -142,7 +230,7 @@ t_token	*init_token(int type, char *value, char *word)
 	token->e_type = type;
 	token->value = value;
 	token->word = word;
-	token->new_word = NULL;
+	token->old_word = NULL;
 	token->prev = NULL;
 	token->next = NULL;
 	return (token);
@@ -162,8 +250,8 @@ t_token	*lexer_collect_id(t_lexer	*lexer)
 	{// this part est repeter dans une fonction
 		v = lexer_get_current_char_as_string(lexer->c);
 		w = lexer_get_current_char_as_string(lexer->c0);
-		value = ft_extrajoin(value, v, 3);
-		word = ft_extrajoin(word, w, 3);
+		value = ft_extrajoin(value, v, FREE_ALL);
+		word = ft_extrajoin(word, w, FREE_ALL);
 		lexer_advance(lexer);
 	}
 	return (init_token(TOKEN_WORD, value, word));// preparer votre structure 
@@ -202,7 +290,7 @@ t_token	*lexer_get_next_token(t_lexer *lexer)
 	{
 		if (lexer->c == 'b')
 			lexer_skip_whitespace(lexer);
-		if (lexer->c == 'p')
+		else if (lexer->c == 'p')
 			return (lexer_advance_with_token(lexer, init_token(TOKEN_PIPE,
 						lexer_get_current_char_as_string(lexer->c),
 						lexer_get_current_char_as_string(lexer->c0))));
@@ -243,7 +331,7 @@ void	qouted_str(char *str, unsigned int  *i, char c)
 	(*i)++;
 	while (str[*i] && str[*i] != c)
 	{
-		if (n == 'd' && str[*i] == '$')
+		if (n == 'd' && str[*i] == '$' && (str[(*i) + 1] == '_' || ft_isalpha(str[(*i) + 1])))
 			str[*i] = 'x'; 				
 		else
 			str[*i] = 'q';
@@ -276,7 +364,7 @@ char	*meta_data(char  *str)
 			str[i] = 'b';
 		else if (str[i] == '\"' || str[i] == '\'')
 			qouted_str(str, &i, str[i]);
-		else if (str[i] == '$')
+		else if (str[i] == '$' && (str[i + 1] == '_' || ft_isalpha(str[i + 1])))
 			str[i] = 'x';
 		else
 			str[i] = 'u';

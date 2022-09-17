@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:06:29 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/13 10:13:01 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/17 17:24:32 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,23 @@
 # define PARSING_H
 # include "../minishell.h"
 
+typedef	struct	s_cmd
+{
+	char			flag;//
+	int				index;//
+	int 			pipe[2];
+	int				in_file_fd;//
+	int				out_file_fd;//
+	char 			**av;//
+	char 			*cmd_path;
+	struct s_cmd	*next;
+	struct s_cmd	*prev;
+}	t_cmd;
+
+//extrajoin macros
+#define FREE_FIRST	1
+#define FREE_SECOND	2
+#define FREE_ALL	3
 
 /**cette structure pour garder le derniere exit code :)*****/
 typedef struct s_global
@@ -39,15 +56,16 @@ typedef struct s_token
 	enum
 	{
 		TOKEN_WORD,
+		TOKEN_PIPE,
 		TOKEN_READ,
 		TOKEN_DREAD,
 		TOKEN_WRITE,
 		TOKEN_DWRITE,
-		TOKEN_PIPE,
+		TOKEN_RDIR_AMBIGU,
 	}	e_type;
 	char			*value;// in meta
 	char			*word;// original
-	char			*new_word;// new word after expanding the original
+	char			*old_word;// new word after expanding the original
 	struct s_token	*prev;
 	struct s_token	*next;
 }	t_token;
@@ -65,7 +83,7 @@ t_global		g_codes;
 
 /*****LEXER PART******/
 //LEXER.C
-void add_token(t_token **head, t_token *token);
+void 			add_token(t_token **head, t_token *token);
 t_token			*lexer_get_next_token(t_lexer *lexer);
 void			lexer_skip_whitespace(t_lexer *lexer);
 void			parsing_part(char *str);
@@ -92,7 +110,7 @@ void			word_error(t_token *token);
 //env_f.c
 void			my_env(char **env, char *to_add);
 unsigned int	env_len(char **env);
-
+t_token			*remove_list(t_token *to_remove, t_token *head);
 /**free_function***/
 //free_func.c
 void			ft_free_list(t_token **token);
@@ -100,6 +118,7 @@ void			ft_free_content(t_data *content);
 
 /*******HERE_DOC :D*********/
 //herdoc_func
+int				position(char *str, char c);
 unsigned int	check_number(t_token *tokens);
 char			*get_file_name(int i);
 void			remplissage_doc(int flag, int fd, char *limiter);
@@ -109,9 +128,9 @@ void			open_herdoc(t_token *token);
 void			open_herdoc(t_token *token);
 void			here_docs(t_token *tokens);
 void			heredoc_racine(t_token	*tokens);
-char			*expand(char	*str, char c);
+char			*expand(char	*str, char c, char flag);
 char			*check_word_in_env(char	*word);
-
+void			handler(int code);
 
 
 //NEW LIBFT-FUNCTION
@@ -119,8 +138,9 @@ char			*ft_extrajoin(char *s1, char *s2, char flag);
 
 /**removing qoutes step :)**/
 
-void    qouted_and_expand(t_token *tokens);
-void    remove_qoutes(t_token *tokens);
+void	removing_qoutes_and_expand(t_token	*tokens);
+// void    qouted_and_expand(t_token *tokens);
+// void    remove_qoutes(t_token *tokens);
 //char	*remove_qt(char	*meta, char	*word);
 //char	*qt(char	*word, int i);
 #endif
