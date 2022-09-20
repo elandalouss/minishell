@@ -10,7 +10,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 make: *** No rule to make target `all'.  Stop.
 
 
-# Make data base, printed on Mon Sep 12 14:45:20 2022
+# Make data base, printed on Tue Sep 20 01:32:14 2022
 
 # Variables
 
@@ -37,7 +37,7 @@ MAKEFILE_LIST :=
 # environment
 VSCODE_CWD = /
 # environment
-Apple_PubSub_Socket_Render = /private/tmp/com.apple.launchd.iIgdr8xEoD/Render
+Apple_PubSub_Socket_Render = /private/tmp/com.apple.launchd.SlrB8tGkv3/Render
 # environment
 PATH = /goinfre/jchennak//.brew/bin:/goinfre/jchennak//.brew/bin:/goinfre/jchennak//.brew/bin:/goinfre/jchennak//.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
 # environment
@@ -49,7 +49,7 @@ ELECTRON_RUN_AS_NODE = 1
 # default
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.XlOXLgFiDd/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.5p6pN2DCK5/Listeners
 # automatic
 %F = $(notdir $%)
 # environment
@@ -63,7 +63,7 @@ HOME = /Users/jchennak
 # default
 MAKEFILEPATH := /Applications/Xcode.app/Contents/Developer/Makefiles
 # environment
-VSCODE_CODE_CACHE_PATH = /Users/jchennak/Library/Application Support/Code/CachedData/784b0177c56c607789f9638da7b6bf3230d47a8c
+VSCODE_CODE_CACHE_PATH = /Users/jchennak/Library/Application Support/Code/CachedData/74b1f979648cc44d385a2286793c226e611f59e7
 # environment
 LOGNAME = jchennak
 # environment
@@ -101,7 +101,7 @@ TMPDIR = /var/folders/zz/zyxvpxvq6csfxvn_n0000hrw000467/T/
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /Users/jchennak/Library/Application Support/Code/1.71.0-main.sock
+VSCODE_IPC_HOOK = /Users/jchennak/Library/Application Support/Code/1.71.2-main.sock
 # environment
 MallocNanoZone = 0
 # makefile
@@ -111,15 +111,13 @@ MFLAGS = -Rrqp
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
-XPC_SERVICE_NAME = com.apple.xpc.launchd.oneshot.0x10000017.Electron
+XPC_SERVICE_NAME = com.microsoft.VSCode.1684
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # automatic
 +F = $(notdir $+)
 # environment
 __CF_USER_TEXT_ENCODING = 0x10C7:0:0
-# environment
-COMMAND_MODE = unix2003
 # default
 MAKEFILES := 
 # automatic
@@ -128,8 +126,6 @@ MAKEFILES :=
 PAGER = less
 # environment
 LC_ALL = C
-# environment
-SECURITYSESSIONID = 1871a
 # automatic
 ^F = $(notdir $^)
 # default
@@ -141,9 +137,9 @@ MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-VSCODE_PID = 54147
+VSCODE_PID = 99289
 # variable set hash-table stats:
-# Load=64/1024=6%, Rehash=0, Collisions=1/85=1%
+# Load=62/1024=6%, Rehash=0, Collisions=1/83=1%
 
 # Pattern-specific Variable Values
 
@@ -225,6 +221,6 @@ GNUmakefile:
 # strcache size: total = 0 / max = 0 / min = 4096 / avg = 0
 # strcache free: total = 0 / max = 0 / min = 4096 / avg = 0
 
-# Finished Make data base on Mon Sep 12 14:45:20 2022
+# Finished Make data base on Tue Sep 20 01:32:14 2022
 
  

@@ -6,13 +6,17 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:06:29 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/17 17:24:32 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/20 00:16:35 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 # include "../minishell.h"
+
+
+#define	TO_EXECUT	1
+#define	NOT_EXEC 	0
 
 typedef	struct	s_cmd
 {
@@ -61,7 +65,7 @@ typedef struct s_token
 		TOKEN_DREAD,
 		TOKEN_WRITE,
 		TOKEN_DWRITE,
-		TOKEN_RDIR_AMBIGU,
+		TOKEN_RDIR_AMBIGU
 	}	e_type;
 	char			*value;// in meta
 	char			*word;// original

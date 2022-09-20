@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 06:12:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/17 02:14:49 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/20 00:49:32 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,7 @@
 // 	return (NULL);
 // }
 
-char *to_expand(char *str, int *i)
+char *to_expand(char *str, int *i, char dq_flag)
 {
 	char 	*word;
 	char	*c;
@@ -239,7 +239,13 @@ char *to_expand(char *str, int *i)
 	}
 	(*i)--;
 	word = check_word_in_env(word);
-	if (word && word[0] == '\0')
+	if (dq_flag != 0)
+	{
+		if (word == NULL)
+			word = ft_strdup("");
+		return (word);
+	}
+	if (word && word[0] == '\0' && dq_flag == 0)
 	{
 		free (word);
 		word = NULL;
@@ -267,30 +273,41 @@ void	expander(t_token	*t)
 	char	*c;
 	char	*m;
 	char	*m_helper;
+	char	dq_flag;
 
 	i = 0;
 	t->old_word = ft_strdup(t->word);
 	free (t->word);
+	dq_flag = 0;
 	t->word = NULL;
 	m_helper = NULL;
 	while(t->value[i])
 	{
+		c = NULL;
+		m = NULL;
 		if (t->value[i] == 'x')
 		{
-			c = to_expand(t->old_word, &i);
-			m = NULL;
+			c = to_expand(t->old_word, &i, dq_flag);
+			if (dq_flag != 0)
+				m = ft_strdup("");
 			if (c)
 			{
+				free (m);
 				m = ft_strdup(c);
 				ft_memset(m, t->value[i], ft_strlen(m));
 			}
+			// printf("|%s|\n|%s|\n", c, m);
 		}
-		else if (t->value[i] != 'd' && t->value[i] != 's')
+		else if (t->value[i] != 'd')
 		{
 			c = ft_strdup(" ");
 			c[0] = t->old_word[i];
 			m = ft_strdup(" ");
 			m[0] = t->value[i];
+		}
+		else if (t->value[i] == 'd')
+		{
+			dq_flag = !dq_flag;
 		}
 		else
 		{

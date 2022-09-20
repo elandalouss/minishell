@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 15:52:20 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/17 17:13:40 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/20 00:36:50 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ char	*check_word_in_env(char	*word)
 
 void	extra_free(char *s1, char *s2, char flag)
 {
-	if (flag == 1 || flag == 3)
+	if (flag == FREE_FIRST || flag == FREE_ALL)
 		free (s1);
-	if (flag == 2 || flag == 3)
+	if (flag == FREE_SECOND || flag == FREE_ALL)
 		free (s2);
 }
 
