@@ -1,14 +1,18 @@
 NAME = minishell
 
 SRCS =  main.c \
-		parsing/root_func.c \
+		parsing/lexer.c \
 		parsing/env_f.c \
+		parsing/error_manangement.c \
+		parsing/free_func.c \
+		parsing/herdoc_func.c \
+		parsing/qouted_str.c \
 
 OBJS = $(SRCS:.c=.o)
 
 CC = @cc
 
-CFLAGS = -Wall -Wextra -Werror -I /Users/$(USER)/readline/ -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I /Users/$(USER)/readline/include -g #-fsanitize=address
 
 RM = rm -f
 
@@ -20,9 +24,9 @@ make_libft:
 
 $(NAME):	$(OBJS) make_libft
 	@make -C libft clean
-	$(CC) $(CFLAGS) -lreadline -L /Users/$(USER)/readline $(OBJS) ./libft/libft.a -o $(NAME)
+	$(CC) $(CFLAGS) -lreadline -L /Users/$(USER)/readline/lib $(OBJS) ./libft/libft.a -o $(NAME)
 	@printf "\033[1;33m****Minishell compiled Succesfully ! ****\033[0m\n"
-    
+
 clean:
 		$(RM) $(OBJS) 
 		@make -C libft clean

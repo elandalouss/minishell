@@ -1,29 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   free_func.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/28 14:08:58 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/11 17:11:57 by jchennak         ###   ########.fr       */
+/*   Created: 2022/09/10 15:50:30 by jchennak          #+#    #+#             */
+/*   Updated: 2022/09/17 03:19:29 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+void	ft_free_list(t_token **token)
 {
-	size_t	len;
-	char	*str;
+	t_token	*temp;
 
-	if (!s1 || !s2)
-		return (NULL);
-	len = ft_strlen(s1) + ft_strlen(s2) + 1;
-	str = malloc(len);
-	if (!str)
-		return (0);
-	(void)ft_strlcpy(str, s1, len);
-	(void)ft_strlcat(str, s2, len);
-	return (str);
+	while (*token)
+	{
+		temp = *token;
+		*token = (*token)->next;
+		free(temp->value);
+		free(temp->word);
+		free(temp->old_word);
+		free(temp);
+	}
+	*token = 0;
+}
+
+void	ft_free_content(t_data *content)
+{
+	if (content->input)
+		free(content->input);
+	if(content->meta_v)
+		free(content->meta_v);
 }

@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 21:58:31 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/09 15:44:16 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/17 04:32:18 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	main(int ac, char **av, char **env)
 		return (0);
 	(void)av;
 	g_codes.g_exit_code = 0;
+	signal(SIGINT, handler);// signal ctl + c
+	signal(SIGQUIT, SIG_IGN);// ctrl + "\"
 	my_env(env, NULL);
 	while (1)
 	{
