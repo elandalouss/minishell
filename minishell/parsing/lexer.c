@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:09:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/19 23:59:41 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/22 08:32:42 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -368,7 +368,7 @@ void	remplissage_cmds(t_cmd *cmds, t_token *tokens)
 }
 
 /*la fonction racine de tout les fonction de parsing part :)  */
-void	parsing_part(char *str)
+t_cmd	*parsing_part(char *str)
 {
 	t_data	content;
 	t_cmd	*cmds_line;
@@ -390,11 +390,11 @@ void	parsing_part(char *str)
 	{
 		ft_free_content(&content);// je penses que tu vas utiliser cette variable apres :)
 		g_codes.g_error_code = 1;
-		return ;
+		return (NULL);
 	}
 	error_management(&content);
 	if (g_codes.g_error_code != 0)
-		return ;// i guess u need free list and content :)
+		return (NULL);// i guess u need free list and content :)
 	// while(content.tokens)
     // {
     //     printf("word is %s his meta is %s token is %d\n", content.tokens->word, content.tokens->value, content.tokens->e_type);
@@ -402,10 +402,10 @@ void	parsing_part(char *str)
     // }
 	heredoc_racine(content.tokens);
 	if (g_codes.g_error_code != 0)
-		return ;// i guess u need free list and content :)
+		return (NULL);// i guess u need free list and content :)
 	removing_qoutes_and_expand(content.tokens);
 	if (g_codes.g_error_code != 0)
-		return ;// i guess u need free list and content :)
+		return (NULL);// i guess u need free list and content :)
 
 	cmds_line = list_init(content.tokens);//function the creat the final linked list
 	// while (cmds_line)
@@ -416,7 +416,7 @@ void	parsing_part(char *str)
 	//fuction that fill the final lked list fds and av9
 	remplissage_cmds(cmds_line, content.tokens);
 	if (g_codes.g_error_code != 0)
-		return ;// i guess u need free list and content :)
+		return (NULL);// i guess u need free list and content :)
 	
 	t_cmd *temp;
 	temp = cmds_line;
@@ -461,6 +461,7 @@ void	parsing_part(char *str)
 
 	ft_free_list(&content.tokens);// tu dois les retourner 
 	ft_free_content(&content);// je penses que tu vas utiliser cette variable apres :)
+	return (cmds_line);
 }
 
 

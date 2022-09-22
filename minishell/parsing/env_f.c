@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 14:04:18 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/17 04:38:57 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/22 08:30:43 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ unsigned int	env_len(char **env)
 	return	(i);
 }
 
+/*****cette fonction utiliser pour *******/
 void    my_env(char **env, char *to_add)
 {
     int				i;

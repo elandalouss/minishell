@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:06:29 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/20 00:16:35 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/22 08:30:43 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ t_global		g_codes;
 void 			add_token(t_token **head, t_token *token);
 t_token			*lexer_get_next_token(t_lexer *lexer);
 void			lexer_skip_whitespace(t_lexer *lexer);
-void			parsing_part(char *str);
+t_cmd			*parsing_part(char *str);
 void			qouted_str(char *str, unsigned int *i, char c);
 char			*meta_data(char *str);
 t_token			*to_tokeniser(t_data content);
@@ -115,6 +115,7 @@ void			word_error(t_token *token);
 void			my_env(char **env, char *to_add);
 unsigned int	env_len(char **env);
 t_token			*remove_list(t_token *to_remove, t_token *head);
+
 /**free_function***/
 //free_func.c
 void			ft_free_list(t_token **token);
