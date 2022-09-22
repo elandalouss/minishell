@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 21:59:36 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/17 04:29:11 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/22 13:02:40 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,6 @@
 #include <readline/readline.h>
 #include "parsing/parsing.h"
 
+
+void    handler(int code);
 #endif

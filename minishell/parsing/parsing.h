@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:06:29 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/22 08:30:43 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/22 15:39:43 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ typedef struct s_token
 		TOKEN_DWRITE,
 		TOKEN_RDIR_AMBIGU
 	}	e_type;
-	char			*value;// in meta
-	char			*word;// original
-	char			*old_word;// new word after expanding the original
+	char			*value;
+	char			*word;
+	char			*old_word;
 	struct s_token	*prev;
 	struct s_token	*next;
 }	t_token;
@@ -82,26 +82,28 @@ typedef struct s_data
 	t_token	*tokens;
 }	t_data;
 
-
 t_global		g_codes;
 
-/*****LEXER PART******/
-//LEXER.C
-void 			add_token(t_token **head, t_token *token);
-t_token			*lexer_get_next_token(t_lexer *lexer);
-void			lexer_skip_whitespace(t_lexer *lexer);
+/*****PARSING PART******/
+//PARSING.C  
+void			add_token(t_token **head, t_token *token);
 t_cmd			*parsing_part(char *str);
 void			qouted_str(char *str, unsigned int *i, char c);
 char			*meta_data(char *str);
 t_token			*to_tokeniser(t_data content);
+void			open_file(t_token *token_r, t_token *token_w, t_cmd *cmd);
+
+/*********TOKENISER :D*******/
+//TOKENISER.C  && TOKENISER_1.C
 void			lexer_advance(t_lexer *lexer);
+t_token			*lexer_get_next_token(t_lexer *lexer);
+void			lexer_skip_whitespace(t_lexer *lexer);
 t_token			*lexer_advance_with_token(t_lexer *lexer, t_token *token);
-char			*lexer_get_current_char_as_string(char  c);
+char			*lexer_get_current_char_as_string(char c);
 t_token			*init_token(int type, char *value, char *word);
 t_token			*lexer_collect_id(t_lexer	*lexer);
 t_token			*lexer_collect_redirection(t_lexer *lexer, int type);
 t_lexer			*init_lexer(char *contents, char *meta_v);
-
 
 /*****ERROR MANANGEMENT PART*************/
 //erro_management.c
@@ -120,6 +122,8 @@ t_token			*remove_list(t_token *to_remove, t_token *head);
 //free_func.c
 void			ft_free_list(t_token **token);
 void			ft_free_content(t_data *content);
+void			free_dp(char **av);
+void			ft_free_cmds(t_cmd **cmds);
 
 /*******HERE_DOC :D*********/
 //herdoc_func
@@ -133,19 +137,35 @@ void			open_herdoc(t_token *token);
 void			open_herdoc(t_token *token);
 void			here_docs(t_token *tokens);
 void			heredoc_racine(t_token	*tokens);
-char			*expand(char	*str, char c, char flag);
+char			*expand(char *str, char c, char flag);
 char			*check_word_in_env(char	*word);
-void			handler(int code);
-
+void			extra_free(char *s1, char *s2, char flag);
 
 //NEW LIBFT-FUNCTION
 char			*ft_extrajoin(char *s1, char *s2, char flag);
 
 /**removing qoutes step :)**/
+//qouted_str.c
+void			removing_qoutes_and_expand(t_token	*tokens);
+char			*to_expand(char *str, int *i, char dq_flag);
+int				ft_charset_chr(char	*s1, char	*charset);
+void			expander(t_token	*t);
+void			removing_qoutes_and_expand(t_token	*tokens);
 
-void	removing_qoutes_and_expand(t_token	*tokens);
-// void    qouted_and_expand(t_token *tokens);
-// void    remove_qoutes(t_token *tokens);
-//char	*remove_qt(char	*meta, char	*word);
-//char	*qt(char	*word, int i);
+/*remplissage de la liste des commande :D*/
+//cmd_list.c
+int				number_of_pipes(t_token *tokens);
+t_cmd			*list_init(t_token *tokens);
+void			remplissage_cmds(t_cmd *cmds, t_token *tokens);
+int				check_access(t_token *tokens);
+char			**my_args(char **av, char *to_add);
+
+// normale split :D
+//split_all.c
+int				num_word(char *av);
+char			**ft_freeall(char **tab, int i);
+char			**allocationlpl(char **str, char *av, int n);
+void			ft_remplissage(char **str, char *av, int n);
+char			**split_all(char *av);
+
 #endif

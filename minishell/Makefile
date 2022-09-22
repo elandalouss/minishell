@@ -1,12 +1,20 @@
 NAME = minishell
 
 SRCS =  main.c \
-		parsing/lexer.c \
+		parsing/parsing.c \
 		parsing/env_f.c \
 		parsing/error_manangement.c \
 		parsing/free_func.c \
 		parsing/herdoc_func.c \
 		parsing/qouted_str.c \
+		parsing/tokeniser.c \
+		parsing/tokeniser_1.c \
+		parsing/heredoc_1.c \
+		parsing/heredoc_2.c \
+		parsing/meta_data.c \
+		parsing/split_all.c \
+		parsing/cmd_list.c \
+
 
 OBJS = $(SRCS:.c=.o)
 

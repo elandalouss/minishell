@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 15:45:04 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/14 13:28:17 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/22 13:00:28 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ void	pipe_errors(t_token *token)
 {
 	if (token->next == NULL || token->prev == NULL)
 	{
-		ft_putstr_fd("ERROR : PIPE IN FRONT OR IN THE END\n", 2);// WA JAWAHIR BADLI HADI B ERROR S7I7
+		ft_putstr_fd("MINISHELL : syntax error near unexpected token `|'\n", 2);
 		g_codes.g_exit_code = 258;
 		g_codes.g_error_code = 1;
 	}
 	else if (token->next->e_type == TOKEN_PIPE)
 	{
-		ft_putstr_fd("ERROR : DOUBLE PIPE\n", 2); // WA JAWAHIR BADLI HADI B ERROR S7I7
+		ft_putstr_fd("MINISHELL : DOUBLE PIPE\n", 2);
 		g_codes.g_exit_code = 258;
 		g_codes.g_error_code = 1;
 	}
@@ -34,13 +34,14 @@ void	redirection_errors(t_token *token)
 {
 	if (!(token->next))
 	{
-		ft_putstr_fd("minishell : syntax error near unexpected token `newline' \n", 2); // WA JAWAHIR BADLI HADI B ERROR S7I7
+		ft_putstr_fd
+		("MINISHELL : syntax error near unexpected token `newline' \n", 2);
 		g_codes.g_exit_code = 258;
 		g_codes.g_error_code = 1;
 	}
 	else if (token->next->e_type != TOKEN_WORD)
 	{
-		ft_putstr_fd("ERROR : REDIRECTION ERROR\n", 2); // WA JAWAHIR BADLI HADI B ERROR S7I7
+		ft_putstr_fd("MINISHELL : syntax error near unexpected token `<'\n", 2);
 		g_codes.g_exit_code = 258;
 		g_codes.g_error_code = 1;
 	}
@@ -56,19 +57,19 @@ void	word_error(t_token *token)
 	s = ft_strchr(token->value, 's');
 	if (s && s == ft_strrchr(token->value, 's'))
 	{
-		ft_putstr_fd("ERROR : UNCLOSED SINGLE QUOTE \n", 2); // WA JAWAHIR BADLI HADI B ERROR S7I7
+		ft_putstr_fd("ERROR : UNCLOSED SINGLE QUOTE \n", 2);
 		g_codes.g_exit_code = 258;
 		g_codes.g_error_code = 1;
 	}
 	if (d && d == ft_strrchr(token->value, 'd'))
 	{
-		ft_putstr_fd("ERROR : UNCLOSED DOUBLE QUOTE \n", 2); // WA JAWAHIR BADLI HADI B ERROR S7I7
+		ft_putstr_fd("ERROR : UNCLOSED DOUBLE QUOTE \n", 2);
 		g_codes.g_exit_code = 258;
 		g_codes.g_error_code = 1;
 	}
 }
 
-/******la onction racine de tout les autre fonction des error*/
+/******la fonction racine de tout les autre fonction des error*/
 void	error_management(t_data *content)
 {
 	t_token	*temp;

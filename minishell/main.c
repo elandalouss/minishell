@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 21:58:31 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/22 08:32:15 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/22 15:42:27 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	main(int ac, char **av, char **env)
 		return (0);
 	(void)av;
 	g_codes.g_exit_code = 0;
-	signal(SIGINT, handler);// signal ctl + c 
-	signal(SIGQUIT, SIG_IGN);// ctrl + "\" 
+	signal(SIGINT, handler);// signal ctl + c // to see
+	signal(SIGQUIT, SIG_IGN);// ctrl + "\" // to see
 	my_env(env, NULL);
 	while (1)
 	{
@@ -31,13 +31,40 @@ int	main(int ac, char **av, char **env)
 		if (str == NULL)
 		{
 			printf("exit\n");
-			exit(0);/*i need to exit with the last exit code */ // c'est just
+			exit(0);/*i need to exit with the last exit code */ // REGLER
 		}
-		add_history(str);
+		add_history(str);// to see
 		cmds_line = parsing_part(str);
 		if (g_codes.g_error_code != 0)
 			continue ;// I GUESS NO NEED TO CHECK IF CMDS_LINE IS null
+	t_cmd *temp;
+	temp = cmds_line;
+	int i = 0;
+	while (temp)
+	{
+		printf("========================\n");
+		printf("index is        %d \n", temp->index);
+		printf("flag is         %d \n", temp->flag);
+		printf("in_file fd is 	%d \n", temp->in_file_fd);
+		printf("out_file fd is	%d \n", temp->out_file_fd);
+		i = 0;
+		printf("av is : \n");
+		while (temp->av && temp->av[i])
+			printf("|%s|\n", temp->av[i++]);
+		printf("========================\n");
+		temp = temp->next;
+	}
 		printf("je suis entrain d'excuter :P\n");
+		ft_free_cmds(&cmds_line);
 	}
 	return (0);
+}
+
+void	handler(int code)
+{
+	(void)code;
+	write (1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
