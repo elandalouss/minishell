@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 15:08:35 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/22 15:29:08 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/25 19:22:46 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,38 @@ int	number_of_pipes(t_token *tokens)
 	return (i);
 }
 
+
+char	*exit_code_expander(char *str, int index, char *meta)
+{
+	int		i;
+	char	*new_word;
+	char	*c;
+	int		exit_code;
+	
+	i = 0;
+	new_word = ft_strdup("");
+	while(str[i])
+	{
+		if (str[i] == '$' && str[i + 1] == '?' && meta[i] != 'Q')
+		{
+			exit_code = g_codes.g_exit_code;
+			if(index != 0)
+				exit_code = 0;
+			new_word = ft_extrajoin(new_word, ft_itoa(exit_code), FREE_ALL);
+			i++;
+		}
+		else
+		{
+			c = ft_strdup(" ");
+			c[0] = str[i];
+			new_word = ft_extrajoin(new_word, c, FREE_ALL);
+		}
+		i++;
+	}
+	free(str);
+	return (new_word);
+}
+
 /*ici je remplirre la liste des commande :D*/
 void	remplissage_cmds(t_cmd *cmds, t_token *tokens)
 {
@@ -78,7 +110,16 @@ void	remplissage_cmds(t_cmd *cmds, t_token *tokens)
 			if (tokens->e_type >= TOKEN_READ && tokens->e_type < TOKEN_RDIR_AMBIGU)
 			{
 				if (check_access(tokens) == -1)
+				{
 					cmds->flag = NOT_EXEC;
+					tokens = skip_noeud(tokens); // :D happy
+				if (tokens != NULL)
+					tokens = tokens->next;
+					break ;
+				//	g_codes.g_exit_code = 1;//
+				//	g_codes.g_error_code = 1;//i guess no :)
+					//you need to skip to the next pipe
+				}
 				else
 				{
 					if (tokens->e_type == TOKEN_DREAD
@@ -88,13 +129,18 @@ void	remplissage_cmds(t_cmd *cmds, t_token *tokens)
 						|| tokens->e_type == TOKEN_WRITE)
 						temp_w = tokens;
 				}
-				tokens = tokens->next;
 			}
 			else if (tokens->e_type == TOKEN_WORD)
+			{
+				// printf ("word %s , old %s , meta %s\n",tokens->word, tokens->old_word, tokens->value);
+				if (ft_strchr(tokens->word, '$'))
+					tokens->word = exit_code_expander(tokens->word, cmds->index, tokens->value);
+				
 				cmds->av = my_args(cmds->av, tokens->word);
+			}
 			else if (tokens->e_type == TOKEN_RDIR_AMBIGU)
 			{
-				tmp = split_all(tokens->word);
+				tmp = split_all(tokens->word);////
 				while (*tmp)
 				{
 					cmds->av = my_args(cmds->av, *tmp);
@@ -109,6 +155,7 @@ void	remplissage_cmds(t_cmd *cmds, t_token *tokens)
 			}
 			tokens = tokens->next;
 		}
+			printf("here3 %p\n", tokens);
 		if (cmds->flag == TO_EXECUT && (temp_r || temp_w))
 		{
 			open_file(temp_r, temp_w, cmds);
@@ -126,17 +173,27 @@ int	check_access(t_token *tokens)
 	i = 0;
 	if (tokens->next->e_type == TOKEN_RDIR_AMBIGU)
 	{
-		printf("minishell: %s: ambiguous redirect\n", tokens->next->old_word);// you need to print this in standar error
+		ft_print_error("minishell: ", tokens->next->old_word, ": ambiguous redirect");
+		//printf("minishell: %s: ambiguous redirect\n", tokens->next->old_word);// you need to print this in standar error
 		return (-1);
 	}
 	if (tokens->e_type == TOKEN_READ || tokens->e_type == TOKEN_DREAD)
 	{
 		i = access(tokens->next->word, F_OK);
-		if (i != -1)
+		if (i == -1)
+		{
+			ft_print_error("minishell: ", tokens->next->old_word, ": No such file or directory");
+			//printf("minishell: %s: No such file or directory\n", tokens->next->old_word);
+			return (i);//
+		}
+		else
 			i = access(tokens->next->word, R_OK);
 	}
 	else if (tokens->e_type == TOKEN_WRITE || tokens->e_type == TOKEN_DWRITE)
 		i = access(tokens->next->word, W_OK);
+	if (i == -1)
+		ft_print_error("minishell: ", tokens->next->old_word, ": Permission denied");
+		//printf("minishell: %s: Permission denied\n", tokens->next->old_word);
 	return (i);
 }
 

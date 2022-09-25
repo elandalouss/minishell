@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 15:45:04 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/22 13:00:28 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/23 17:30:39 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ void	pipe_errors(t_token *token)
 {
 	if (token->next == NULL || token->prev == NULL)
 	{
-		ft_putstr_fd("MINISHELL : syntax error near unexpected token `|'\n", 2);
+		ft_putstr_fd("minishell : syntax error near unexpected token `|'\n", 2);
 		g_codes.g_exit_code = 258;
 		g_codes.g_error_code = 1;
 	}
 	else if (token->next->e_type == TOKEN_PIPE)
 	{
-		ft_putstr_fd("MINISHELL : DOUBLE PIPE\n", 2);
+		ft_putstr_fd("minishell : syntax error near unexpected token `|'\n", 2);
 		g_codes.g_exit_code = 258;
 		g_codes.g_error_code = 1;
 	}
@@ -35,13 +35,14 @@ void	redirection_errors(t_token *token)
 	if (!(token->next))
 	{
 		ft_putstr_fd
-		("MINISHELL : syntax error near unexpected token `newline' \n", 2);
+		("minishell : syntax error near unexpected token `newline' \n", 2);
 		g_codes.g_exit_code = 258;
 		g_codes.g_error_code = 1;
 	}
 	else if (token->next->e_type != TOKEN_WORD)
 	{
-		ft_putstr_fd("MINISHELL : syntax error near unexpected token `<'\n", 2);
+		ft_print_error("minishell : syntax error near unexpected token `", token->next->word, "'");
+		//ft_putstr_fd("MINISHELL : syntax error near unexpected token `<'\n", 2);
 		g_codes.g_exit_code = 258;
 		g_codes.g_error_code = 1;
 	}

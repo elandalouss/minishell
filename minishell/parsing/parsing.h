@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:06:29 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/22 15:39:43 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/24 18:50:13 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ void			word_error(t_token *token);
 void			my_env(char **env, char *to_add);
 unsigned int	env_len(char **env);
 t_token			*remove_list(t_token *to_remove, t_token *head);
+void			ft_print_error(char *s1, char	*s2, char	*s3);
+t_token			*skip_noeud(t_token *tokens);
 
 /**free_function***/
 //free_func.c
@@ -150,7 +152,6 @@ void			removing_qoutes_and_expand(t_token	*tokens);
 char			*to_expand(char *str, int *i, char dq_flag);
 int				ft_charset_chr(char	*s1, char	*charset);
 void			expander(t_token	*t);
-void			removing_qoutes_and_expand(t_token	*tokens);
 
 /*remplissage de la liste des commande :D*/
 //cmd_list.c

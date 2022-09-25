@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 13:03:19 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/22 13:27:24 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/23 17:20:28 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ void	here_docs(t_token *tokens)
 	holder = check_number(tokens);
 	if (holder > 16)
 	{
-		printf("minishell : maximum here-document count exceeded\n");
+		ft_print_error("minishell : maximum here-document count exceeded", NULL, NULL);
+		//printf("minishell : maximum here-document count exceeded\n");
 		exit(16);
 	}
 	open_herdoc(tokens);

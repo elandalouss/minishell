@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 06:12:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/22 15:04:49 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/25 18:47:37 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,20 +85,24 @@ void	expander(t_token	*t)
 			if (c)
 			{
 				free (m);
-				m = ft_strdup(c);
+				m = ft_strdup(c); 
 				ft_memset(m, t->value[i], ft_strlen(m));
 			}
 		}
-		else if (t->value[i] != 'd')
+		else if (t->value[i] != 'd' &&  t->value[i] != 's')
 		{
 			c = ft_strdup(" ");
 			c[0] = t->old_word[i];
+			if (dq_flag == -2)
+				t->value[i] = 'Q';
 			m = ft_strdup(" ");
 			m[0] = t->value[i];
 		}
-		else if (t->value[i] == 'd')
+		else if (t->value[i] == 'd' || t->value[i] == 's')
 		{
 			dq_flag = !dq_flag;
+			if (t->value[i] == 's')
+				dq_flag = -2;
 		}
 		else
 		{
@@ -124,7 +128,10 @@ void	removing_qoutes_and_expand(t_token	*tokens)
 		if (ft_strchr(tokens->value, 'x'))
 			expander(tokens);
 		else
+		{
+			expander(tokens);
 			tokens->old_word = ft_strdup(tokens->word);
+		}
 		if (tokens->word == NULL || (ft_charset_chr(tokens->word, " \t\n") >= 0
 				&& tokens->value[ft_charset_chr(tokens->word, " \t\n")] == 'u'))
 			tokens->e_type = TOKEN_RDIR_AMBIGU;
