@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 15:08:35 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/25 19:22:46 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/28 19:07:30 by aelandal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ t_cmd	*list_init(t_token *tokens)
 		temp->flag = TO_EXECUT;
 		temp->prev = NULL;
 		temp->next = head;
+		if (head)
+			head->prev = temp;
 		temp->out_file_fd = -2;
 		temp->in_file_fd = -2;
 		if (temp->next == NULL)
@@ -155,7 +157,6 @@ void	remplissage_cmds(t_cmd *cmds, t_token *tokens)
 			}
 			tokens = tokens->next;
 		}
-			printf("here3 %p\n", tokens);
 		if (cmds->flag == TO_EXECUT && (temp_r || temp_w))
 		{
 			open_file(temp_r, temp_w, cmds);

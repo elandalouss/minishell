@@ -3,38 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:06:29 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/24 18:50:13 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/25 23:12:18 by aelandal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 # include "../minishell.h"
+# include "../execution/execution.h"
 
 
 #define	TO_EXECUT	1
 #define	NOT_EXEC 	0
 
-typedef	struct	s_cmd
-{
-	char			flag;//
-	int				index;//
-	int 			pipe[2];
-	int				in_file_fd;//
-	int				out_file_fd;//
-	char 			**av;//
-	char 			*cmd_path;
-	struct s_cmd	*next;
-	struct s_cmd	*prev;
-}	t_cmd;
 
 //extrajoin macros
 #define FREE_FIRST	1
 #define FREE_SECOND	2
 #define FREE_ALL	3
+
+typedef	struct	s_cmd t_cmd;
 
 /**cette structure pour garder le derniere exit code :)*****/
 typedef struct s_global
@@ -44,7 +35,7 @@ typedef struct s_global
 	char	**g_env;
 }	t_global;
 
-/******* lexer data********/
+/******* lexer data ********/
 typedef struct s_lexer
 {
 	char			c;
@@ -168,5 +159,7 @@ char			**ft_freeall(char **tab, int i);
 char			**allocationlpl(char **str, char *av, int n);
 void			ft_remplissage(char **str, char *av, int n);
 char			**split_all(char *av);
+
+void			handler(int code);
 
 #endif
