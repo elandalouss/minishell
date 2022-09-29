@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 15:08:35 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/28 19:07:30 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/09/29 17:27:40 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,8 @@ void	remplissage_cmds(t_cmd *cmds, t_token *tokens)
 int	check_access(t_token *tokens)
 {
 	int	i;
-
+	int	fd;
+	
 	i = 0;
 	if (tokens->next->e_type == TOKEN_RDIR_AMBIGU)
 	{
@@ -191,7 +192,14 @@ int	check_access(t_token *tokens)
 			i = access(tokens->next->word, R_OK);
 	}
 	else if (tokens->e_type == TOKEN_WRITE || tokens->e_type == TOKEN_DWRITE)
+	{
+		if (access(tokens->next->word, F_OK) == -1)
+		{
+			fd = open(tokens->next->word, O_CREAT , 0644);
+			close(fd);
+		}
 		i = access(tokens->next->word, W_OK);
+	}
 	if (i == -1)
 		ft_print_error("minishell: ", tokens->next->old_word, ": Permission denied");
 		//printf("minishell: %s: Permission denied\n", tokens->next->old_word);

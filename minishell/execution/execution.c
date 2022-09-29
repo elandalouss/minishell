@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:24:15 by aelandal          #+#    #+#             */
-/*   Updated: 2022/09/29 17:03:43 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/09/29 17:49:29 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,9 @@ pid_t	exec_cmd(t_cmd *data)
 	}
 	if (f_pid == 0)
 	{
+		printf("hello1\n");
 		dup_files(data);
+		printf("hello2\n");
 		if (ft_strchr_int(data->av[0], '/') == -1)
 		{
 			while (g_codes.g_env[i])
