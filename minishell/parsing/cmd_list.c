@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 15:08:35 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/29 17:27:40 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/29 21:39:26 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,8 @@ void	remplissage_cmds(t_cmd *cmds, t_token *tokens)
 				{
 					cmds->flag = NOT_EXEC;
 					tokens = skip_noeud(tokens); // :D happy
-				if (tokens != NULL)
-					tokens = tokens->next;
+					if (tokens != NULL)
+						tokens = tokens->next;
 					break ;
 				//	g_codes.g_exit_code = 1;//
 				//	g_codes.g_error_code = 1;//i guess no :)
@@ -130,6 +130,8 @@ void	remplissage_cmds(t_cmd *cmds, t_token *tokens)
 					if (tokens->e_type == TOKEN_DWRITE
 						|| tokens->e_type == TOKEN_WRITE)
 						temp_w = tokens;
+					if (tokens != NULL)
+						tokens = tokens->next;
 				}
 			}
 			else if (tokens->e_type == TOKEN_WORD)
