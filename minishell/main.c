@@ -48,23 +48,23 @@ int	main(int ac, char **av, char **env)
 			continue ;// I GUESS NO NEED TO CHECK IF CMDS_LINE IS null
 	t_cmd *temp;
 	temp = cmds_line;
-	int i = 0;
-	while (temp)
-	{
-		printf("========================\n");
-		printf("index is        %d \n", temp->index);
-		printf("flag is         %d \n", temp->flag);
-		printf("in_file fd is 	%d \n", temp->in_file_fd);
-		printf("out_file fd is	%d \n", temp->out_file_fd);
-		i = 0;
-		printf("av is : \n");
-		while (temp->av && temp->av[i])
-			printf("|%s|\n", temp->av[i++]);
-		printf("========================\n");
-		temp = temp->next;
-	}
+	// int i = 0;
+	// while (temp)
+	// {
+	// 	printf("========================\n");
+	// 	printf("index is        %d \n", temp->index);
+	// 	printf("flag is         %d \n", temp->flag);
+	// 	printf("in_file fd is 	%d \n", temp->in_file_fd);
+	// 	printf("out_file fd is	%d \n", temp->out_file_fd);
+	// 	i = 0;
+	// 	printf("av is : \n");
+	// 	while (temp->av && temp->av[i])
+	// 		printf("|%s|\n", temp->av[i++]);
+	// 	printf("========================\n");
+	// 	temp = temp->next;
+	// }
 		//printf("je suis entrain d'excuter :P\n");
-		//execution_part(cmds_line);
+		execution_part(cmds_line);
 		ft_free_cmds(&cmds_line);
 		
 	}

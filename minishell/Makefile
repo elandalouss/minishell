@@ -16,6 +16,8 @@ SRCS =  main.c \
 		parsing/cmd_list.c \
 		execution/execution.c \
 		execution/exec_utils.c \
+		execution/dup_wait_functions.c \
+		execution/cmd_staff.c \
 		builtins/echo.c \
 		builtins/cd.c \
 		builtins/pwd.c \
@@ -41,8 +43,8 @@ make_libft:
 
 $(NAME):	$(OBJS) make_libft
 	@make -C libft clean
-	$(CC) $(CFLAGS) -lreadline -L /Users/$(USER)/readline/lib $(OBJS) ./libft/libft.a -o $(NAME)
-#	$(CC) $(CFLAGS) -lreadline -L /Users/$(USER)/goinfre/.brew/opt/readline/lib $(OBJS) ./libft/libft.a -o $(NAME) # -L /Users/$(USER)/goinfre/.brew/opt/readline/include 
+#	$(CC) $(CFLAGS) -lreadline -L /Users/$(USER)/readline/lib $(OBJS) ./libft/libft.a -o $(NAME)
+	$(CC) $(CFLAGS) -lreadline -L /Users/$(USER)/goinfre/.brew/opt/readline/lib $(OBJS) ./libft/libft.a -o $(NAME) # -L /Users/$(USER)/goinfre/.brew/opt/readline/include 
 	@printf "\033[1;33m****Minishell compiled Succesfully ! ****\033[0m\n"
 
 clean:
