@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:09:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/30 18:29:06 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/30 18:43:42 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ t_cmd	*parsing_part(char *str)
 {
 	t_data	content;
 	t_cmd	*cmds_line;
-
 	remplire_content(&content, str);
 	if (content.tokens == NULL)
 	{

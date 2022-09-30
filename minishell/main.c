@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 21:58:31 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/30 17:15:02 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/30 18:53:03 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	main(int ac, char **av, char **env)
 		temp = temp->next;
 	}
 		//printf("je suis entrain d'excuter :P\n");
-		execution_part(cmds_line);
+		//execution_part(cmds_line);
 		ft_free_cmds(&cmds_line);
 		
 	}

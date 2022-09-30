@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 06:12:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/25 18:47:37 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/30 18:52:32 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,11 @@ void	expander(t_token	*t)
 			if (c)
 			{
 				free (m);
-				m = ft_strdup(c); 
+				m = ft_strdup(c);
 				ft_memset(m, t->value[i], ft_strlen(m));
 			}
 		}
-		else if (t->value[i] != 'd' &&  t->value[i] != 's')
+		else if (t->value[i] != 'd' && t->value[i] != 's')
 		{
 			c = ft_strdup(" ");
 			c[0] = t->old_word[i];
@@ -130,6 +130,7 @@ void	removing_qoutes_and_expand(t_token	*tokens)
 		else
 		{
 			expander(tokens);
+			free(tokens->old_word);
 			tokens->old_word = ft_strdup(tokens->word);
 		}
 		if (tokens->word == NULL || (ft_charset_chr(tokens->word, " \t\n") >= 0
