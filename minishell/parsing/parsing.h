@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:06:29 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/25 23:12:18 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/09/30 18:31:38 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,15 @@
 # include "../minishell.h"
 # include "../execution/execution.h"
 
-
-#define	TO_EXECUT	1
-#define	NOT_EXEC 	0
-
+# define TO_EXECUT	1
+# define NOT_EXEC	0
 
 //extrajoin macros
-#define FREE_FIRST	1
-#define FREE_SECOND	2
-#define FREE_ALL	3
+# define FREE_FIRST	1
+# define FREE_SECOND	2
+# define FREE_ALL	3
 
-typedef	struct	s_cmd t_cmd;
+typedef struct s_cmd	t_cmd;
 
 /**cette structure pour garder le derniere exit code :)*****/
 typedef struct s_global
@@ -34,6 +32,8 @@ typedef struct s_global
 	int		g_exit_code;
 	char	**g_env;
 }	t_global;
+
+t_global				g_codes;
 
 /******* lexer data ********/
 typedef struct s_lexer
@@ -72,8 +72,6 @@ typedef struct s_data
 	char	*meta_v;
 	t_token	*tokens;
 }	t_data;
-
-t_global		g_codes;
 
 /*****PARSING PART******/
 //PARSING.C  

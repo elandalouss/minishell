@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 15:45:04 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/23 17:30:39 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/30 18:14:36 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	redirection_errors(t_token *token)
 	}
 	else if (token->next->e_type != TOKEN_WORD)
 	{
-		ft_print_error("minishell : syntax error near unexpected token `", token->next->word, "'");
-		//ft_putstr_fd("MINISHELL : syntax error near unexpected token `<'\n", 2);
+		ft_print_error("minishell : syntax error near unexpected token `",
+			token->next->word, "'");
 		g_codes.g_exit_code = 258;
 		g_codes.g_error_code = 1;
 	}

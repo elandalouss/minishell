@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:09:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/29 17:29:12 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/30 18:29:06 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,36 +30,46 @@ void	open_file(t_token *token_r, t_token *token_w, t_cmd *cmd)
 	}
 }
 
+void	remplire_content(t_data *content, char *str)
+{
+	content->input = ft_strdup(str);
+	content->meta_v = meta_data(str);
+	content->tokens = to_tokeniser(*content);
+}
+
+void	check_content(t_data *content)
+{
+	ft_free_content(content);
+	g_codes.g_error_code = 1;
+}
+
 /*la fonction racine de tout les fonction de parsing part :)  */
 t_cmd	*parsing_part(char *str)
 {
 	t_data	content;
 	t_cmd	*cmds_line;
 
-	content.input = ft_strdup(str);
-	content.meta_v = meta_data(str);
-	content.tokens = to_tokeniser(content);
+	remplire_content(&content, str);
 	if (content.tokens == NULL)
 	{
-		ft_free_content(&content);
-		g_codes.g_error_code = 1;
+		check_content(&content);
 		return (NULL);
 	}
 	error_management(&content);
 	if (g_codes.g_error_code != 0)
-		return (NULL);// i guess u need free list and content :)
+		return (NULL);
 	heredoc_racine(content.tokens);
 	if (g_codes.g_error_code != 0)
-		return (NULL);// i guess u need free list and content :)
+		return (NULL);
 	removing_qoutes_and_expand(content.tokens);
 	if (g_codes.g_error_code != 0)
-		return (NULL);// i guess u need free list and content :)
-	cmds_line = list_init(content.tokens);//function the creat the final linked list
+		return (NULL);
+	cmds_line = list_init(content.tokens);
 	remplissage_cmds(cmds_line, content.tokens);
 	if (g_codes.g_error_code != 0)
-		return (NULL);// i guess u need free list and content :)
-	ft_free_list(&content.tokens);// tu dois les retourner 
-	ft_free_content(&content);// je penses que tu vas utiliser cette variable apres :)
+		return (NULL);
+	ft_free_list(&content.tokens);
+	ft_free_content(&content);
 	return (cmds_line);
 }
 
@@ -83,25 +93,3 @@ void	add_token(t_token **head, t_token *token)
 		}
 	}
 }
-
-/*ces la fonction racine de mon lexer :)*/
-t_token	*to_tokeniser(t_data content)
-{
-	t_lexer	*lex;
-	t_token	*token;
-	t_token	*final;
-
-	final = NULL;
-	lex = init_lexer(content.input, content.meta_v);
-	token = lexer_get_next_token(lex);
-	add_token(&final, token);
-	while (token != NULL)
-	{
-		token = lexer_get_next_token(lex);
-		add_token(&final, token);
-	}
-	free(lex);
-	return (final);
-}
-
-

@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 15:52:20 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/22 13:44:04 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/30 17:35:53 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ char	*check_word_in_env(char	*word)
 	len = ft_strlen(word);
 	while (*word && g_codes.g_env[i])
 	{
-		if (ft_strncmp(g_codes.g_env[i], word, len) == 0 && g_codes.g_env[i][len] == '=')
+		if (ft_strncmp(g_codes.g_env[i], word, len) == 0
+			&& g_codes.g_env[i][len] == '=')
 		{
 			free(word);
 			word = ft_substr(g_codes.g_env[i], len + 1,

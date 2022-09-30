@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_f.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 14:04:18 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/25 22:26:01 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/09/30 17:30:45 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,19 +68,19 @@ t_token	*remove_list(t_token *to_remove, t_token *head)
 }
 
 /*UTILISER POUR AFFICHER LES MESSAGE EN STANDAR D'ERROR*/
-void ft_print_error(char *s1, char	*s2, char	*s3)
+void	ft_print_error(char *s1, char *s2, char *s3)
 {
 	write(2, s1, ft_strlen(s1));
 	if (s2)
-		write(2, s2, ft_strlen(s2));;;
-	if(s3)
+		write(2, s2, ft_strlen(s2));
+	if (s3)
 		write(2, s3, ft_strlen(s3));
 	write(2, "\n", 1);
 }
 
 t_token	*skip_noeud(t_token *tokens)
 {
-	while(tokens)
+	while (tokens)
 	{
 		if (tokens->e_type == TOKEN_PIPE)
 			return (tokens);

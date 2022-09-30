@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 15:50:30 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/22 12:31:30 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/30 18:28:48 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,24 @@ void	ft_free_cmds(t_cmd **cmds)
 		free(temp);
 	}
 	free(*cmds);
+}
+
+/*ces la fonction racine de mon lexer :)*/
+t_token	*to_tokeniser(t_data content)
+{
+	t_lexer	*lex;
+	t_token	*token;
+	t_token	*final;
+
+	final = NULL;
+	lex = init_lexer(content.input, content.meta_v);
+	token = lexer_get_next_token(lex);
+	add_token(&final, token);
+	while (token != NULL)
+	{
+		token = lexer_get_next_token(lex);
+		add_token(&final, token);
+	}
+	free(lex);
+	return (final);
 }
