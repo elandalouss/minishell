@@ -36,6 +36,24 @@ char	*ft_extrajoin(char *s1, char *s2, char flag)
 	return (final);
 }
 
+char	*expand_utile(char *str, int *i, int *flag)
+{
+	char	*suffix;
+	char	*word;
+
+	suffix = ft_strdup(" ");
+	(*i)++;
+	while (str[(*i)] && (ft_isalnum(str[(*i)]) || str[(*i)] == '_'))
+	{
+		*suffix = str[(*i)];
+		word = ft_extrajoin(word, suffix, FREE_FIRST);
+		(*i)++;
+	}
+	free(suffix);
+	*flag = 1;
+	return (word);
+}
+
 char	*expand(char	*str, char c, char flag)
 {
 	char	*prefix;
@@ -50,20 +68,8 @@ char	*expand(char	*str, char c, char flag)
 		return (ft_substr(str, 0, ft_strlen(str) + 1));
 	if (i > 0)
 		prefix = ft_substr(str, 0, i);
-	word = ft_strdup("");
 	if (str[i] && (ft_isalpha(str[i + 1]) || str[i + 1] == '_'))
-	{
-		suffix = ft_strdup(" ");
-		i++;
-		while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
-		{
-			*suffix = str[i];
-			word = ft_extrajoin(word, suffix, FREE_FIRST);
-			i++;
-		}
-		free(suffix);
-		flag = 1;
-	}
+		word = expand_utile(str, &i, &flag);
 	else
 	{
 		prefix = ft_extrajoin(prefix, "$", FREE_FIRST);
