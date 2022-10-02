@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:06:29 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/30 18:31:38 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/01 14:57:21 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void			open_herdoc(t_token *token);
 void			open_herdoc(t_token *token);
 void			here_docs(t_token *tokens);
 void			heredoc_racine(t_token	*tokens);
-char			*expand(char *str, char c, char flag);
+char			*expand(char *str, char c, char flag, char *word);
 char			*check_word_in_env(char	*word);
 void			extra_free(char *s1, char *s2, char flag);
 

@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 13:04:28 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/22 13:33:29 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/02 02:23:47 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,14 @@ char	*ft_extrajoin(char *s1, char *s2, char flag)
 	return (final);
 }
 
-char	*expand_utile(char *str, int *i, int *flag)
+char	*expand_utile(char *str, int *i, char *flag)
 {
 	char	*suffix;
 	char	*word;
 
 	suffix = ft_strdup(" ");
 	(*i)++;
+	word = NULL;
 	while (str[(*i)] && (ft_isalnum(str[(*i)]) || str[(*i)] == '_'))
 	{
 		*suffix = str[(*i)];
@@ -54,11 +55,10 @@ char	*expand_utile(char *str, int *i, int *flag)
 	return (word);
 }
 
-char	*expand(char	*str, char c, char flag)
+char	*expand(char	*str, char c, char flag, char *word)
 {
 	char	*prefix;
 	char	*suffix;
-	char	*word;
 	int		i;
 
 	prefix = NULL;
@@ -68,15 +68,16 @@ char	*expand(char	*str, char c, char flag)
 		return (ft_substr(str, 0, ft_strlen(str) + 1));
 	if (i > 0)
 		prefix = ft_substr(str, 0, i);
+	word = ft_strdup("");
 	if (str[i] && (ft_isalpha(str[i + 1]) || str[i + 1] == '_'))
 		word = expand_utile(str, &i, &flag);
 	else
 	{
 		prefix = ft_extrajoin(prefix, "$", FREE_FIRST);
-		suffix = expand(str + (i + 1), '$', 0);
+		suffix = expand(str + (i + 1), '$', 0, NULL);
 	}
 	if (flag)
-		suffix = expand(str + i, '$', 0);
+		suffix = expand(str + i, '$', 0, NULL);
 	word = check_word_in_env(word);
 	word = ft_extrajoin(prefix, word, FREE_ALL);
 	word = ft_extrajoin(word, suffix, FREE_ALL);
@@ -114,27 +115,4 @@ char	*get_file_name(int i)
 	file[16] = c[10];
 	file[17] = c[11];
 	return (file);
-}
-
-/*ici je remplire le fichier de heredoc :)*/
-void	remplissage_doc(int flag, int fd, char *limiter)
-{
-	char	*str;
-	char	*tmp;
-
-	str = readline(">");
-	while (str && ft_strncmp(str, limiter, ft_strlen(limiter) + 1))
-	{
-		if (flag && ft_strchr(str, '$'))
-		{
-			tmp = str;
-			str = expand(str, '$', 0);
-			free (tmp);
-		}
-		ft_putendl_fd(str, fd);
-		free(str);
-		str = readline(">");
-	}
-	if (str)
-		free(str);
 }

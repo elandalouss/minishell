@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 15:38:56 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/25 18:08:13 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/02 02:24:05 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,27 @@ char	*meta_data(char *str)
 		i++;
 	}
 	return (str);
+}
+
+/*ici je remplire le fichier de heredoc :)*/
+void	remplissage_doc(int flag, int fd, char *limiter)
+{
+	char	*str;
+	char	*tmp;
+
+	str = readline(">");
+	while (str && ft_strncmp(str, limiter, ft_strlen(limiter) + 1))
+	{
+		if (flag && ft_strchr(str, '$'))
+		{
+			tmp = str;
+			str = expand(str, '$', 0, NULL);
+			free (tmp);
+		}
+		ft_putendl_fd(str, fd);
+		free(str);
+		str = readline(">");
+	}
+	if (str)
+		free(str);
 }

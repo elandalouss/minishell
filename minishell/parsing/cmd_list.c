@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 15:08:35 by jchennak          #+#    #+#             */
-/*   Updated: 2022/09/30 18:28:09 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/02 02:24:21 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,3 @@ char	**my_args(char **av, char *to_add)
 	free(av);
 	return (new);
 }
-
