@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 13:04:28 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/02 02:23:47 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/22 13:33:29 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,29 +36,11 @@ char	*ft_extrajoin(char *s1, char *s2, char flag)
 	return (final);
 }
 
-char	*expand_utile(char *str, int *i, char *flag)
-{
-	char	*suffix;
-	char	*word;
-
-	suffix = ft_strdup(" ");
-	(*i)++;
-	word = NULL;
-	while (str[(*i)] && (ft_isalnum(str[(*i)]) || str[(*i)] == '_'))
-	{
-		*suffix = str[(*i)];
-		word = ft_extrajoin(word, suffix, FREE_FIRST);
-		(*i)++;
-	}
-	free(suffix);
-	*flag = 1;
-	return (word);
-}
-
-char	*expand(char	*str, char c, char flag, char *word)
+char	*expand(char	*str, char c, char flag)
 {
 	char	*prefix;
 	char	*suffix;
+	char	*word;
 	int		i;
 
 	prefix = NULL;
@@ -70,14 +52,25 @@ char	*expand(char	*str, char c, char flag, char *word)
 		prefix = ft_substr(str, 0, i);
 	word = ft_strdup("");
 	if (str[i] && (ft_isalpha(str[i + 1]) || str[i + 1] == '_'))
-		word = expand_utile(str, &i, &flag);
+	{
+		suffix = ft_strdup(" ");
+		i++;
+		while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
+		{
+			*suffix = str[i];
+			word = ft_extrajoin(word, suffix, FREE_FIRST);
+			i++;
+		}
+		free(suffix);
+		flag = 1;
+	}
 	else
 	{
 		prefix = ft_extrajoin(prefix, "$", FREE_FIRST);
-		suffix = expand(str + (i + 1), '$', 0, NULL);
+		suffix = expand(str + (i + 1), '$', 0);
 	}
 	if (flag)
-		suffix = expand(str + i, '$', 0, NULL);
+		suffix = expand(str + i, '$', 0);
 	word = check_word_in_env(word);
 	word = ft_extrajoin(prefix, word, FREE_ALL);
 	word = ft_extrajoin(word, suffix, FREE_ALL);
@@ -115,4 +108,27 @@ char	*get_file_name(int i)
 	file[16] = c[10];
 	file[17] = c[11];
 	return (file);
+}
+
+/*ici je remplire le fichier de heredoc :)*/
+void	remplissage_doc(int flag, int fd, char *limiter)
+{
+	char	*str;
+	char	*tmp;
+
+	str = readline(">");
+	while (str && ft_strncmp(str, limiter, ft_strlen(limiter) + 1))
+	{
+		if (flag && ft_strchr(str, '$'))
+		{
+			tmp = str;
+			str = expand(str, '$', 0);
+			free (tmp);
+		}
+		ft_putendl_fd(str, fd);
+		free(str);
+		str = readline(">");
+	}
+	if (str)
+		free(str);
 }

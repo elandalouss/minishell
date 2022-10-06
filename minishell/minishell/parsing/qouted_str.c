@@ -6,20 +6,11 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 06:12:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/02 04:00:32 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/09/30 18:52:32 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	to_expand_utils(char dq_flag, char *word)
-{
-	if (word && word[0] == '\0' && dq_flag == 0)
-	{
-		free (word);
-		word = NULL;
-	}
-}
 
 /*ici je fais mon expand :D*/
 char	*to_expand(char *str, int *i, char dq_flag)
@@ -44,7 +35,11 @@ char	*to_expand(char *str, int *i, char dq_flag)
 			word = ft_strdup("");
 		return (word);
 	}
-	to_expand_utils(dq_flag, word);
+	if (word && word[0] == '\0' && dq_flag == 0)
+	{
+		free (word);
+		word = NULL;
+	}
 	return (word);
 }
 
@@ -63,16 +58,7 @@ int	ft_charset_chr(char	*s1, char	*charset)
 	return (-1);
 }
 
-
 /****remplire la structe word avec la nouveau mot expander*****/
-char	change_flag(char dq_flag, char value)
-{
-	dq_flag = !dq_flag;
-	if (value == 's')
-		dq_flag = -2;
-	return (dq_flag);
-}
-
 void	expander(t_token	*t)
 {
 	int		i;
@@ -113,7 +99,11 @@ void	expander(t_token	*t)
 			m[0] = t->value[i];
 		}
 		else if (t->value[i] == 'd' || t->value[i] == 's')
-			dq_flag = change_flag(dq_flag, t->value[i]);
+		{
+			dq_flag = !dq_flag;
+			if (t->value[i] == 's')
+				dq_flag = -2;
+		}
 		else
 		{
 			i++;
