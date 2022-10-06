@@ -34,7 +34,7 @@ void	echo(t_cmd	*data)
 		printf("\n");
 		return ;
 	}
-	while (data->av[i] && data->av[i][0] == '-')
+	while ((data->av[i] && data->av[i][0] == '-') && data->av[i][1] != '\0')
 	{
 		if (check_echo_args(data->av[i]) == 1)
 		{

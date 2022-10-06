@@ -6,7 +6,7 @@
 /*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:24:15 by aelandal          #+#    #+#             */
-/*   Updated: 2022/09/30 14:30:22 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/05 08:57:19 by aelandal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,20 @@ void	check_stat(t_cmd	*data, char	*path)
 
 int	buitin_exeution(t_cmd	*data)
 {
-	if (ft_strncmp(data->av[0], "echo", ft_strlen("echo")) == 0)
+	if (ft_strncmp(data->av[0], "echo", ft_strlen("echo ")) == 0)
 		echo(data);
-	else if (ft_strncmp(data->av[0], "cd", ft_strlen("cd")) == 0)
+	else if (ft_strncmp(data->av[0], "cd", ft_strlen("cd ")) == 0)
 		cd(data);
-	else if (ft_strncmp(data->av[0], "pwd", ft_strlen("pwd")) == 0)
+	else if (ft_strncmp(data->av[0], "pwd", ft_strlen("pwd ")) == 0)
 		pwd();
-	else if (ft_strncmp(data->av[0], "export", ft_strlen("export")) == 0)
-		;
-	else if (ft_strncmp(data->av[0], "unset", ft_strlen("unset")) == 0)
+	else if (ft_strncmp(data->av[0], "export", ft_strlen("export ")) == 0)
+		export(data);
+	else if (ft_strncmp(data->av[0], "unset", ft_strlen("unset ")) == 0)
 		unset(data);
-	else if (ft_strncmp(data->av[0], "env", ft_strlen("env")) == 0)
+	else if (ft_strncmp(data->av[0], "env", ft_strlen("env ")) == 0)
 		env();
-	else if (ft_strncmp(data->av[0], "exit", ft_strlen("exit")) == 0)
-		exit_p();
+	else if (ft_strncmp(data->av[0], "exit", ft_strlen("exit ")) == 0)
+		exit_p(data);
 	else
 		return (-1);
 	return (1);
@@ -79,16 +79,21 @@ int	execution_part(t_cmd	*data)
 
 	terminal[0] = dup(0);
 	terminal[1] = dup(1);
-	if (data->next == NULL && data->flag == 1)
-		ls_next_null(data, terminal);
-	else
+	if (g_codes.g_env != NULL)
 	{
-		while (data != NULL)
+		if (data->next == NULL)
+			ls_next_null(data, terminal);
+		else
 		{
-			f_pid = ls_next_not_null(data, terminal);
-			data = data->next;
+			while (data != NULL)
+			{
+				f_pid = ls_next_not_null(data, terminal);
+				data = data->next;
+			}
+			ft_wait(f_pid);
 		}
-		ft_wait(f_pid);
 	}
+	else
+		ft_putendl_fd("No such file or directory", 2);
 	return (g_codes.g_exit_code % 255);
 }

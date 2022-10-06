@@ -6,7 +6,7 @@
 /*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:35:14 by aelandal          #+#    #+#             */
-/*   Updated: 2022/09/30 14:18:31 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/03 11:45:32 by aelandal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,14 @@ void	printt_error(char *str1, char *str2, char *str3, int error_code)
 	write (2, ": ", 2);
 	ft_putendl_fd((char *)str3, 2);
 	exit(error_code);
+}
+
+void	printt_error1(char *str1, char *str2, char *str3, int error_code)
+{
+	ft_putstr_fd((char *)str1, 2);
+	write (2, ": ", 2);
+	ft_putstr_fd((char *)str2, 2);
+	write (2, ": ", 2);
+	ft_putendl_fd((char *)str3, 2);
+	g_codes.g_exit_code = error_code;
 }

@@ -6,7 +6,7 @@
 /*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 10:04:30 by aelandal          #+#    #+#             */
-/*   Updated: 2022/09/22 11:53:49 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/05 09:39:13 by aelandal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	**copy_2d(char **str1, char **str2)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str2[i])
@@ -25,16 +25,41 @@ char	**copy_2d(char **str1, char **str2)
 	return (str1);
 }
 
-void    unset(t_cmd	*data)
+int	check_unste_error(t_cmd	*data)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	while (data->av[i])
+	{
+		j = 0;
+		while (data->av[i][j])
+		{
+			if ((data->av[i][j] < 'a' || data->av[i][j] > 'z')
+				&& (data->av[i][j] < 'A' || data->av[i][j] > 'Z')
+					&& data->av[i][j] != '#' && data->av[i][j] != '_')
+				return (-1);
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}
+
+void	unset(t_cmd	*data)
 {
 	char	**tmp;
 	int		ln_env_cnt;
 	int		j;
 	int		i;
 	int		k;
-	
+
 	i = 1;
 	ln_env_cnt = 0;
+	if (check_unste_error(data) == -1)
+		printt_error1("./minishell: unset", data->av[i], \
+			": not a valid identifier", 1);
 	while (g_codes.g_env[ln_env_cnt])
 		ln_env_cnt++;
 	while (data->av[i])
@@ -43,17 +68,24 @@ void    unset(t_cmd	*data)
 		j = 0;
 		while (j < ln_env_cnt && g_codes.g_env[j])
 		{
-			if (ft_strncmp(g_codes.g_env[j], data->av[i], ft_strlen(data->av[i])) == 0)
+			if (ft_strncmp(g_codes.g_env[j], data->av[i], \
+				ft_strlen(data->av[i])) == 0)
 			{
 				tmp = ft_calloc(ln_env_cnt + 1, sizeof(char *));
 				if (!tmp)
-					return ; //exit with exit_code = 1
+				{
+					ft_putendl_fd("allocation failed", 2);
+					exit (1);
+				}
 				tmp = copy_2d(tmp, g_codes.g_env);
 				free_2d(g_codes.g_env, ln_env_cnt);
 				ln_env_cnt--;
 				g_codes.g_env = ft_calloc(ln_env_cnt + 1, sizeof(char *));
 				if (!g_codes.g_env)
-					return ; // should exit with exit_code = 1
+				{
+					ft_putendl_fd("allocation failed", 2);
+					exit (1);
+				}
 				k = 0;
 				while (tmp[k])
 				{

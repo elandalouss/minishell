@@ -6,7 +6,7 @@
 /*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 14:23:31 by aelandal          #+#    #+#             */
-/*   Updated: 2022/09/30 14:28:16 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/03 11:04:28 by aelandal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,33 +18,39 @@ void	get_path_split_join(t_cmd	*data)
 	char	**arr;
 
 	i = 0;
-	while (g_codes.g_env[i])
+	if (g_codes.g_env[i])
 	{
-		if (ft_strncmp(g_codes.g_env[i], "PATH=", 5) == 0)
-			break ;
-		i++;
+		while (g_codes.g_env[i])
+		{
+			if (ft_strncmp(g_codes.g_env[i], "PATH=", 5) == 0)
+				break ;
+			i++;
+		}
+		arr = ft_split(g_codes.g_env[i], ':');
+		i = 0;
+		while (arr[i])
+		{
+			arr[i] = ft_strjoin(arr[i], "/");
+			arr[i] = ft_strjoin(arr[i], data->av[0]);
+			if (access(arr[i], X_OK) == 0)
+				break ;
+			i++;
+		}
+		data->cmd_path = arr[i];
+		if (!data->cmd_path)
+			printt_error ("minishell", data->av[0], "command not found", 127);
 	}
-	arr = ft_split(g_codes.g_env[i], ':');
-	i = 0;
-	while (arr[i])
-	{
-		arr[i] = ft_strjoin(arr[i], "/");
-		arr[i] = ft_strjoin(arr[i], data->av[0]);
-		if (access(arr[i], X_OK) == 0)
-			break ;
-		i++;
-	}
-	data->cmd_path = arr[i];
-	if (!data->cmd_path)
-		printt_error ("minishell", data->av[0], "command not found", 127);
 }
 
 int	one_cmd(t_cmd	*data)
 {
 	pid_t	f_pid;
 
-	f_pid = exec_cmd(data);
-	ft_wait(f_pid);
+	if (data->flag == 1)
+	{
+		f_pid = exec_cmd(data);
+		ft_wait(f_pid);
+	}
 	return (g_codes.g_exit_code % 255);
 }
 
@@ -59,8 +65,12 @@ pid_t	multi_pipes(t_cmd	*data)
 		ft_putendl_fd("ERROR!, pipe failed", 2);
 		exit(-1);
 	}
-	f_pid = exec_cmd(data);
-	return (f_pid);
+	if (data->flag == 1)
+	{
+		f_pid = exec_cmd(data);
+		return (f_pid);
+	}
+	return (0);
 }
 
 void	ls_next_null(t_cmd *data, int *terminal)
