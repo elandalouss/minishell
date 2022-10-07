@@ -6,11 +6,27 @@
 /*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 08:55:32 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/06 16:49:34 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/07 11:49:57 by aelandal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	check_export_error(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && str[i] != '=')
+	{
+		if ((str[i] < 'a' || str[i] > 'z')
+			&& (str[i] < 'A' || str[i] > 'Z')
+				&& str[i] != '#' && str[i] != '_')
+			return (-1);
+		i++;
+	}
+	return (1);
+}
 
 int	cmp_without_equal(const char *s1, const char *s2, size_t n)
 {
@@ -59,17 +75,22 @@ int	cmp(char	*av)
 {
 	int		i;
 	int		j;
-	char	*tmp;
-	char	**arr;
+	int		big_lenght;
+	char	**arr_av;
+	char	**arr_env;
 
 	if (ft_strchr_int(av, '=') == 1)
 	{
-		arr = ft_split(av, '='); // possible leak
-		tmp = ft_strjoin(arr[0], "="); // leak
+		arr_av = ft_split(av, '='); // possible leak
 		i = 0;
 		while (g_codes.g_env[i])
 		{
-			if (cmp_without_equal(tmp, g_codes.g_env[i], ft_strlen(tmp)) == 0) //I think it works fine ()
+			arr_env = ft_split(g_codes.g_env[i], '=');
+			if (ft_strlen(arr_av[0]) >= ft_strlen(arr_env[0]))
+				big_lenght = ft_strlen(arr_av[0]);
+			else
+				big_lenght = ft_strlen(arr_env[0]);
+			if (cmp_without_equal(arr_av[0], arr_env[0], big_lenght) == 0) //I think it works fine ()
 			{
 				g_codes.g_env[i] = ft_strdup(av);
 				return (0);
@@ -139,9 +160,9 @@ void	export(t_cmd	*data)
 		{
 			tmp2 = ft_split(tmp_env[i], '=');
 			if (ft_strchr_int(tmp_env[i], '=') == 1)
-				printf("declare -x %s = \"%s\"\n", tmp2[0], tmp2[1]);
+				printf("declare -x %s = \"%s\"\n", tmp2[0], ft_substr(tmp_env[i], ft_strlen(tmp2[0]) + 1, ft_strlen(tmp_env[i])));
 			else
-				printf("declare -x %s\n", tmp2[0]);
+			printf("declare -x %s\n", tmp2[0]);
 			i++;
 		}
 	}
@@ -151,6 +172,8 @@ void	export(t_cmd	*data)
 		while (data->av[i])
 		{
 			theres_eq(data->av[i]);
+			if (check_export_error(data->av[i]) == -1)
+				printt_error("./minishell: export", data->av[i], "not a valid identifier", 1);
 			cmp(data->av[i]);
 			i++;
 		}

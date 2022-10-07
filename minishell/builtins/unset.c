@@ -6,7 +6,7 @@
 /*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 10:04:30 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/05 09:39:13 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/07 09:52:11 by aelandal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	**copy_2d(char **str1, char **str2)
 	return (str1);
 }
 
-int	check_unste_error(t_cmd	*data)
+int	check_builtin_error(t_cmd	*data)
 {
 	int	i;
 	int	j;
@@ -57,7 +57,7 @@ void	unset(t_cmd	*data)
 
 	i = 1;
 	ln_env_cnt = 0;
-	if (check_unste_error(data) == -1)
+	if (check_builtin_error(data) == -1)
 		printt_error1("./minishell: unset", data->av[i], \
 			": not a valid identifier", 1);
 	while (g_codes.g_env[ln_env_cnt])
