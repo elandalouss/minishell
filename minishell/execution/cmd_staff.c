@@ -6,7 +6,7 @@
 /*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 14:23:31 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/03 11:04:28 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/07 12:01:57 by aelandal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ pid_t	multi_pipes(t_cmd	*data)
 	if (data->next != NULL && pipe(data->pipe) == -1)
 	{
 		ft_putendl_fd("ERROR!, pipe failed", 2);
-		exit(-1);
+		exit(1);
 	}
 	if (data->flag == 1)
 	{

@@ -6,7 +6,7 @@
 /*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:23:24 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/05 13:15:20 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/08 13:35:47 by aelandal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,6 @@ void	env(void);
 void	pwd(void);
 void	exit_p(t_cmd	*data);
 void	export(t_cmd	*data);
+void	free_tab(char **arr);
 
 #endif

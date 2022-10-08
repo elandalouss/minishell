@@ -6,15 +6,17 @@
 /*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 16:07:20 by aelandal          #+#    #+#             */
-/*   Updated: 2022/09/23 15:23:10 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/08 15:45:15 by aelandal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int check_echo_args(char *av)
+int	check_echo_args(char *av)
 {
-	int i = 1;
+	int	i;
+
+	i = 1;
 	while (av[i])
 	{
 		if (av[i] == 'n')
@@ -25,10 +27,28 @@ int check_echo_args(char *av)
 	return (1);
 }
 
+void	echo_print(char **av, int i, int flag)
+{
+	if (av[i] != NULL)
+	{
+		while (av[i])
+		{
+			printf("%s", av[i++]);
+			if (av[i])
+				printf(" ");
+		}
+	}
+	if (flag == 0)
+		printf("\n");
+}
+
 void	echo(t_cmd	*data)
 {
-	int		i = 1;
-	char	flag = 0;
+	int		i;
+	char	flag;
+
+	flag = 0;
+	i = 1;
 	if (!data->av[1])
 	{
 		printf("\n");
@@ -44,15 +64,5 @@ void	echo(t_cmd	*data)
 		else
 			break ;
 	}
-	if (data->av[i] != NULL)
-	{
-		while (data->av[i])
-		{
-			printf("%s", data->av[i++]);
-			if (data->av[i])
-				printf(" ");
-		}
-	}
-	if (flag == 0)
-		printf("\n");
+	echo_print(data->av, i, flag);
 }

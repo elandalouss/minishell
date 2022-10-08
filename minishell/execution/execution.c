@@ -6,7 +6,7 @@
 /*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:24:15 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/05 08:57:19 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/08 18:09:11 by aelandal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ pid_t	exec_cmd(t_cmd *data)
 	if (f_pid == -1)
 	{
 		ft_putendl_fd("fork(), allocation failed\n", 2);
-		exit(-1);
+		exit(1);
 	}
 	if (f_pid == 0)
 	{
@@ -95,5 +95,6 @@ int	execution_part(t_cmd	*data)
 	}
 	else
 		ft_putendl_fd("No such file or directory", 2);
+	//system("leaks minishell");
 	return (g_codes.g_exit_code % 255);
 }

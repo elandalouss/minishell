@@ -6,11 +6,24 @@
 /*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 08:55:32 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/07 11:49:57 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/08 13:30:30 by aelandal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	free_tab(char **arr)
+{
+	int i;
+
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
 
 int	check_export_error(char *str)
 {
@@ -21,7 +34,7 @@ int	check_export_error(char *str)
 	{
 		if ((str[i] < 'a' || str[i] > 'z')
 			&& (str[i] < 'A' || str[i] > 'Z')
-				&& str[i] != '#' && str[i] != '_')
+			&& str[i] != '#' && str[i] != '_')
 			return (-1);
 		i++;
 	}
@@ -64,11 +77,11 @@ int	cmp_env(char *str1, char *str2)
 	return (1);
 }
 
-int theres_eq(char *str)
+int	theres_eq(char *str)
 {
-	if(str && str[ft_strlen(str) - 1] == '=')
-		return(1);
-	return(0);
+	if (str && str[ft_strlen(str) - 1] == '=')
+		return (1);
+	return (0);
 }
 
 int	cmp(char	*av)
@@ -81,7 +94,7 @@ int	cmp(char	*av)
 
 	if (ft_strchr_int(av, '=') == 1)
 	{
-		arr_av = ft_split(av, '='); // possible leak
+		arr_av = ft_split(av, '=');
 		i = 0;
 		while (g_codes.g_env[i])
 		{
@@ -90,15 +103,17 @@ int	cmp(char	*av)
 				big_lenght = ft_strlen(arr_av[0]);
 			else
 				big_lenght = ft_strlen(arr_env[0]);
-			if (cmp_without_equal(arr_av[0], arr_env[0], big_lenght) == 0) //I think it works fine ()
+			if (cmp_without_equal(arr_av[0], arr_env[0], big_lenght) == 0)
 			{
 				g_codes.g_env[i] = ft_strdup(av);
 				return (0);
 			}
 			i++;
 		}
-		if(!theres_eq(av))
+		if (!theres_eq(av))
 			my_env(g_codes.g_env, av);
+		free_tab(arr_av);
+		free_tab(arr_env);
 	}
 	else
 	{
@@ -120,17 +135,17 @@ int	cmp(char	*av)
 	return (0);
 }
 
-
-
 void	export(t_cmd	*data)
 {
 	int				i;
+	char			*tmp;
+	char			*tmp3;
 	char			**tmp_env;
 	char			**tmp2;
-	char			*tmp;
 
 	if (data->av[1] == NULL)
 	{
+		// =============================================== danger zoon
 		tmp_env = ft_calloc(env_len(g_codes.g_env) + 1, sizeof(char *));
 		if (!tmp_env)
 		{
@@ -140,6 +155,7 @@ void	export(t_cmd	*data)
 		i = 0;
 		while (g_codes.g_env[i])
 		{
+			//free(tmp_env[i]);
 			tmp_env[i] = ft_strdup(g_codes.g_env[i]);
 			i++;
 		}
@@ -155,17 +171,27 @@ void	export(t_cmd	*data)
 			}
 			i++;
 		}
+		// ===================================================================smoller danger zoon
 		i = 0;
 		while (tmp_env[i] != NULL)
 		{
 			tmp2 = ft_split(tmp_env[i], '=');
 			if (ft_strchr_int(tmp_env[i], '=') == 1)
-				printf("declare -x %s = \"%s\"\n", tmp2[0], ft_substr(tmp_env[i], ft_strlen(tmp2[0]) + 1, ft_strlen(tmp_env[i])));
+			{
+				tmp3 = ft_substr(tmp_env[i], ft_strlen(tmp2[0]) + 1, ft_strlen(tmp_env[i]));
+				printf("declare -x %s = \"%s\"\n", tmp2[0], tmp3);
+				free(tmp3);
+			}
 			else
-			printf("declare -x %s\n", tmp2[0]);
+				printf("declare -x %s\n", tmp2[0]);
 			i++;
 		}
+		//system("leaks minishell");
+		free_tab(tmp_env);
+		free_tab(tmp2);
+		// ===================================================================smoller danger zoon
 	}
+		// =============================================== danger zoon
 	else if (data->av[1] != NULL)
 	{
 		i = 1;
@@ -173,7 +199,10 @@ void	export(t_cmd	*data)
 		{
 			theres_eq(data->av[i]);
 			if (check_export_error(data->av[i]) == -1)
-				printt_error("./minishell: export", data->av[i], "not a valid identifier", 1);
+			{
+				printt_error1("./minishell: export", data->av[i], \
+					"not a valid identifier", 1); // handle export =eqkhfbg valid 
+			}
 			cmp(data->av[i]);
 			i++;
 		}
