@@ -6,7 +6,7 @@
 /*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 14:23:31 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/07 12:01:57 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/10 12:58:40 by aelandal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ pid_t	multi_pipes(t_cmd	*data)
 	}
 	if (data->flag == 1)
 	{
+		f_pid = 0;
 		f_pid = exec_cmd(data);
 		return (f_pid);
 	}

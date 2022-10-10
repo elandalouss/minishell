@@ -6,7 +6,7 @@
 /*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:24:15 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/08 18:09:11 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/10 13:00:21 by aelandal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,16 @@ pid_t	exec_cmd(t_cmd *data)
 	}
 	if (f_pid == 0)
 	{
-		dup_files(data);
-		if (ft_strchr_int(data->av[0], '/') == -1)
-			get_path_split_join(data);
-		else
-			data->cmd_path = data->av[0];
-		if (execve(data->cmd_path, data->av, g_codes.g_env) == -1)
-			check_stat(data, data->cmd_path);
+		if (buitin_exeution(data) == -1)
+		{
+			dup_files(data);
+			if (ft_strchr_int(data->av[0], '/') == -1)
+				get_path_split_join(data);
+			else
+				data->cmd_path = data->av[0];
+			if (execve(data->cmd_path, data->av, g_codes.g_env) == -1)
+				check_stat(data, data->cmd_path);
+		}
 	}
 	return (f_pid);
 }

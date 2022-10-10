@@ -6,7 +6,7 @@
 /*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 08:55:32 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/08 13:30:30 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/10 11:49:02 by aelandal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_tab(char **arr)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (arr[i])
@@ -27,17 +27,11 @@ void	free_tab(char **arr)
 
 int	check_export_error(char *str)
 {
-	int	i;
-
-	i = 0;
-	while (str[i] && str[i] != '=')
-	{
-		if ((str[i] < 'a' || str[i] > 'z')
-			&& (str[i] < 'A' || str[i] > 'Z')
-			&& str[i] != '#' && str[i] != '_')
-			return (-1);
-		i++;
-	}
+	if (str[0] == '#' || str[0] == '$')
+		return (-2);
+	else if ((str[0] < 'a' || str[0] > 'z') && (str[0] < 'A' \
+		|| str[0] > 'Z') && str[0] != '_')
+		return (-1);
 	return (1);
 }
 
@@ -135,73 +129,79 @@ int	cmp(char	*av)
 	return (0);
 }
 
-void	export(t_cmd	*data)
+void	export_null(char	**tmp_env)
 {
 	int				i;
 	char			*tmp;
 	char			*tmp3;
-	char			**tmp_env;
 	char			**tmp2;
 
-	if (data->av[1] == NULL)
+	if (!tmp_env)
 	{
-		// =============================================== danger zoon
-		tmp_env = ft_calloc(env_len(g_codes.g_env) + 1, sizeof(char *));
-		if (!tmp_env)
-		{
-			ft_putendl_fd("ERROR !, malloc failed", 2);
-			exit(1);
-		}
-		i = 0;
-		while (g_codes.g_env[i])
-		{
-			//free(tmp_env[i]);
-			tmp_env[i] = ft_strdup(g_codes.g_env[i]);
-			i++;
-		}
-		i = 0;
-		while (tmp_env[i + 1] != NULL)
-		{
-			if (cmp_env(tmp_env[i], tmp_env[i + 1]) == -1)
-			{
-				tmp = tmp_env[i];
-				tmp_env[i] = tmp_env[i + 1];
-				tmp_env[i + 1] = tmp;
-				i = -1;
-			}
-			i++;
-		}
-		// ===================================================================smoller danger zoon
-		i = 0;
-		while (tmp_env[i] != NULL)
-		{
-			tmp2 = ft_split(tmp_env[i], '=');
-			if (ft_strchr_int(tmp_env[i], '=') == 1)
-			{
-				tmp3 = ft_substr(tmp_env[i], ft_strlen(tmp2[0]) + 1, ft_strlen(tmp_env[i]));
-				printf("declare -x %s = \"%s\"\n", tmp2[0], tmp3);
-				free(tmp3);
-			}
-			else
-				printf("declare -x %s\n", tmp2[0]);
-			i++;
-		}
-		//system("leaks minishell");
-		free_tab(tmp_env);
-		free_tab(tmp2);
-		// ===================================================================smoller danger zoon
+		ft_putendl_fd("ERROR !, malloc failed", 2);
+		exit(1);
 	}
-		// =============================================== danger zoon
+	i = 0;
+	while (g_codes.g_env[i])
+	{
+		free(tmp_env[i]);
+		tmp_env[i] = ft_strdup(g_codes.g_env[i]);
+		i++;
+	}
+	i = 0;
+	while (tmp_env[i + 1] != NULL)
+	{
+		if (cmp_env(tmp_env[i], tmp_env[i + 1]) == -1)
+		{
+			tmp = tmp_env[i];
+			tmp_env[i] = tmp_env[i + 1];
+			tmp_env[i + 1] = tmp;
+			i = -1;
+		}
+		i++;
+	}
+	i = 0;
+	while (tmp_env[i] != NULL)
+	{
+		tmp2 = ft_split(tmp_env[i], '=');
+		if (ft_strchr_int(tmp_env[i], '=') == 1)
+		{
+			tmp3 = ft_substr(tmp_env[i], \
+				ft_strlen(tmp2[0]) + 1, ft_strlen(tmp_env[i]));
+			printf("declare -x %s = \"%s\"\n", tmp2[0], tmp3);
+			free(tmp3);
+		}
+		else
+			printf("declare -x %s\n", tmp2[0]);
+		i++;
+		free_tab(tmp2);
+	}
+	free_tab(tmp_env);
+}
+
+void	export(t_cmd	*data)
+{
+	int				i;
+	char			**tmp_env;
+
+	tmp_env = ft_calloc(env_len(g_codes.g_env) + 1, sizeof(char *));
+	if (data->av[1] == NULL)
+		export_null(tmp_env);
 	else if (data->av[1] != NULL)
 	{
 		i = 1;
 		while (data->av[i])
 		{
 			theres_eq(data->av[i]);
-			if (check_export_error(data->av[i]) == -1)
+			if (check_export_error(data->av[i]) == -2)
+			{
+				export_null(tmp_env);
+				return ;
+			}
+			else if (check_export_error(data->av[i]) == -1)
 			{
 				printt_error1("./minishell: export", data->av[i], \
-					"not a valid identifier", 1); // handle export =eqkhfbg valid 
+					"not a valid identifier", 1);
 			}
 			cmp(data->av[i]);
 			i++;
