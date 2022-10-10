@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 06:12:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/02 04:00:32 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/10 15:48:11 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	expander(t_token	*t)
 
 	i = 0;
 	t->old_word = ft_strdup(t->word);
+
 	free (t->word);
 	dq_flag = 0;
 	t->word = NULL;
