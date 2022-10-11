@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 08:55:32 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/10 11:49:02 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/12 00:45:10 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,26 +88,40 @@ int	cmp(char	*av)
 
 	if (ft_strchr_int(av, '=') == 1)
 	{
+	//system("leaks minishell");
 		arr_av = ft_split(av, '=');
 		i = 0;
+		system("leaks minishell");
 		while (g_codes.g_env[i])
 		{
+
 			arr_env = ft_split(g_codes.g_env[i], '=');
 			if (ft_strlen(arr_av[0]) >= ft_strlen(arr_env[0]))
 				big_lenght = ft_strlen(arr_av[0]);
 			else
 				big_lenght = ft_strlen(arr_env[0]);
+				//printf("heelllo");
 			if (cmp_without_equal(arr_av[0], arr_env[0], big_lenght) == 0)
 			{
 				g_codes.g_env[i] = ft_strdup(av);
 				return (0);
 			}
 			i++;
+		free_tab(arr_env);//here we go
 		}
+	sleep(5);	
+	printf("i'mout :D\n");
+//	sleep(1);
 		if (!theres_eq(av))
+		{
+			char **temp;
+			temp = g_codes.g_env;// and also in this place 
 			my_env(g_codes.g_env, av);
-		free_tab(arr_av);
-		free_tab(arr_env);
+			free_tab(temp);
+		}
+		free_tab(arr_av);   
+	system("leaks minishell");printf("meybe in other place====\n");
+	sleep(1);
 	}
 	else
 	{

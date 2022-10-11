@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 21:58:31 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/10 13:30:38 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/12 00:33:06 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	main(int ac, char **av, char **env)
 			continue ;// I GUESS NO NEED TO CHECK IF CMDS_LINE IS null
 		execution_part(cmds_line);
 		ft_free_cmds(&cmds_line);
+		system("leaks minishell");
 	}
 	return (0);
 }

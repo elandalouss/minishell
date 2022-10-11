@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 14:04:18 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/10 16:02:26 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/11 23:19:37 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ void	my_env(char **env, char *to_add)
 	int				i;
 	unsigned int	len;
 
+	// system("leaks minishell");
 	len = env_len(env);
+
 	if (to_add)
 		len++;
 	g_codes.g_env = ft_calloc(len + 1, sizeof(char *));
@@ -42,6 +44,7 @@ void	my_env(char **env, char *to_add)
 	if (to_add)
 		g_codes.g_env[i++] = ft_strdup(to_add);
 	g_codes.g_env[i] = NULL;
+	// system("leaks minishell");
 }
 
 /******unused function :) seul pour supprimer un noeud*******/
