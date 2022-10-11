@@ -29,7 +29,10 @@ void	check_stat(t_cmd	*data, char	*path)
 int	buitin_exeution(t_cmd	*data)
 {
 	if (ft_strncmp(data->av[0], "echo", ft_strlen("echo ")) == 0)
+	{
+		printf("here\n");
 		echo(data);
+	}
 	else if (ft_strncmp(data->av[0], "cd", ft_strlen("cd ")) == 0)
 		cd(data);
 	else if (ft_strncmp(data->av[0], "pwd", ft_strlen("pwd ")) == 0)
@@ -98,6 +101,6 @@ int	execution_part(t_cmd	*data)
 	}
 	else
 		ft_putendl_fd("No such file or directory", 2);
-	//system("leaks minishell");
+	system("leaks minishell");
 	return (g_codes.g_exit_code % 255);
 }

@@ -63,7 +63,7 @@ int	main(int ac, char **av, char **env)
 	}
 		if (g_codes.g_error_code != 0)
 			continue ;// I GUESS NO NEED TO CHECK IF CMDS_LINE IS null
-		//execution_part(cmds_line);
+		execution_part(cmds_line);
 		ft_free_cmds(&cmds_line);
 	}
 	return (0);
