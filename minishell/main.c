@@ -44,23 +44,6 @@ int	main(int ac, char **av, char **env)
 		}
 		add_history(str);// to see
 		cmds_line = parsing_part(str);
-	t_cmd *temp;
-	temp = cmds_line;
-	int i = 0;
-	while (temp)
-	{
-		printf("========================\n");
-		printf("index is        %d \n", temp->index);
-		printf("flag is         %d \n", temp->flag);
-		printf("in_file fd is 	%d \n", temp->in_file_fd);
-		printf("out_file fd is	%d \n", temp->out_file_fd);
-		i = 0;
-		printf("av is : \n");
-		while (temp->av && temp->av[i])
-			printf("|%s|\n", temp->av[i++]);
-		printf("========================\n");
-		temp = temp->next;
-	}
 		if (g_codes.g_error_code != 0)
 			continue ;// I GUESS NO NEED TO CHECK IF CMDS_LINE IS null
 		execution_part(cmds_line);

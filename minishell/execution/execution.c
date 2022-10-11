@@ -28,11 +28,10 @@ void	check_stat(t_cmd	*data, char	*path)
 
 int	buitin_exeution(t_cmd	*data)
 {
+	if (!(data->av))
+		return (1);
 	if (ft_strncmp(data->av[0], "echo", ft_strlen("echo ")) == 0)
-	{
-		printf("here\n");
 		echo(data);
-	}
 	else if (ft_strncmp(data->av[0], "cd", ft_strlen("cd ")) == 0)
 		cd(data);
 	else if (ft_strncmp(data->av[0], "pwd", ft_strlen("pwd ")) == 0)
@@ -49,33 +48,36 @@ int	buitin_exeution(t_cmd	*data)
 		return (-1);
 	return (1);
 }
-
+ 
 pid_t	exec_cmd(t_cmd *data)
 {
 	pid_t	f_pid;
 	int		i;
 
 	i = 0;
-	f_pid = fork();
-	if (f_pid == -1)
+	if (buitin_exeution(data) == -1)
 	{
-		ft_putendl_fd("fork(), allocation failed\n", 2);
-		exit(1);
-	}
-	if (f_pid == 0)
-	{
-		if (buitin_exeution(data) == -1)
+		f_pid = fork();
+		if (f_pid == -1)
 		{
-			dup_files(data);
-			if (ft_strchr_int(data->av[0], '/') == -1)
-				get_path_split_join(data);
-			else
-				data->cmd_path = data->av[0];
-			if (execve(data->cmd_path, data->av, g_codes.g_env) == -1)
-				check_stat(data, data->cmd_path);
+			ft_putendl_fd("fork(), allocation failed\n", 2);
+			exit(1);
 		}
+		if (f_pid == 0)
+		{
+				dup_files(data);
+				if (ft_strchr_int(data->av[0], '/') == -1)
+					get_path_split_join(data);
+					
+				else
+					data->cmd_path = data->av[0];
+				if (execve(data->cmd_path, data->av, g_codes.g_env) == -1)
+					check_stat(data, data->cmd_path);
+		exit(g_codes.g_exit_code);
 	}
 	return (f_pid);
+	}
+	return ();
 }
 
 int	execution_part(t_cmd	*data)
@@ -101,6 +103,6 @@ int	execution_part(t_cmd	*data)
 	}
 	else
 		ft_putendl_fd("No such file or directory", 2);
-	system("leaks minishell");
+	//system("leaks minishell");
 	return (g_codes.g_exit_code % 255);
 }

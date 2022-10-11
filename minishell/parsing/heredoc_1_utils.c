@@ -25,6 +25,7 @@ void	preparation_docv(int expand_flag, char	*limiter, int i)
 		exit (1);
 	}
 	remplissage_doc(expand_flag, fd, limiter);
+	printf("ffff\n");
 	close (fd);
 	free(file);
 }

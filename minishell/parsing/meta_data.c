@@ -69,6 +69,11 @@ void	remplissage_doc(int flag, int fd, char *limiter)
 	char	*tmp;
 
 	str = readline(">");
+	if(str == NULL)
+	{
+		printf ("ffffff\n");
+		return ;
+	}
 	while (str && ft_strncmp(str, limiter, ft_strlen(limiter) + 1))
 	{
 		if (flag && ft_strchr(str, '$'))
@@ -80,6 +85,8 @@ void	remplissage_doc(int flag, int fd, char *limiter)
 		ft_putendl_fd(str, fd);
 		free(str);
 		str = readline(">");
+		if (str == NULL)
+			break ;
 	}
 	if (str)
 		free(str);

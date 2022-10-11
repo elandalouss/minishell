@@ -12,14 +12,52 @@
 
 #include "../minishell.h"
 
+int	ft_atoi_exit(char *str)
+{
+	int				i;
+	unsigned long	nbr;
+	int				sign;
+
+	sign = 1;
+	i = 0;
+	nbr = 0;
+
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign = -1;
+		i++;
+	}
+	while (str[i])
+	{
+		if (ft_isdigit(str[i]))
+			nbr = nbr * 10 + str[i++] - '0';
+		else
+			return (-1);
+		if (sign == 1 && nbr >= 9223372036854775807)
+			return (-1);
+		if (sign == -1 && nbr > 9223372036854775807)
+			return (-1);
+	}
+	return (sign * nbr);
+}
+
 void	exit_p(t_cmd	*data)
 {
-	int	exit_code;
+	int				exit_code;
 
+	printf("exit\n");
+	if (data->av[1] && data->av[2])
+	{
+		printt_error1("minishell", "exit", "too many arguments", 1);
+		return ;
+	}
 	if (data->av[1])
 	{
-		exit_code = ft_atoi(data->av[1]);
-		exit(exit_code);
+		exit_code = ft_atoi_exit(data->av[1]);
+		if (exit_code == -1)
+			printt_error("minishell: exit", data->av[1], "numeric argument required", 255);
+		exit((unsigned char)exit_code);
 	}
 	exit(g_codes.g_exit_code);
 }

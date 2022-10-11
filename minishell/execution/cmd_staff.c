@@ -77,7 +77,7 @@ pid_t	multi_pipes(t_cmd	*data)
 void	ls_next_null(t_cmd *data, int *terminal)
 {
 	dup_files(data);
-	if (buitin_exeution(data) == -1)
+	//if (buitin_exeution(data) == -1)
 		one_cmd(data);
 	reset_std(terminal);
 }
