@@ -1,0 +1,6 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory `/Users/jchennak/Desktop/mini__shell'
+make: Leaving directory `/Users/jchennak/Desktop/mini__shell'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+
