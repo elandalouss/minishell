@@ -30,8 +30,8 @@ int	main(int ac, char **av, char **env)
 		return (0);
 	(void)av;
 	g_codes.g_exit_code = 0;
-	signal(SIGINT, handler);// signal ctl + c // to see
-	signal(SIGQUIT, SIG_IGN);// ctrl + "\" // to see
+	signal(SIGINT, handler);
+	signal(SIGQUIT, SIG_IGN);
 	my_env(env, NULL);
 	while (1)
 	{
@@ -48,7 +48,7 @@ int	main(int ac, char **av, char **env)
 			continue ;// I GUESS NO NEED TO CHECK IF CMDS_LINE IS null
 		execution_part(cmds_line);
 		ft_free_cmds(&cmds_line);
-		system("leaks minishell");
+		//system("leaks minishell");
 	}
 	return (0);
 }

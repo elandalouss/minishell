@@ -70,4 +70,5 @@ void	ft_wait(pid_t	f_pid)
 			}
 		}
 	}
+	signal(SIGINT, handler);// signal ctl + c // to see
 }

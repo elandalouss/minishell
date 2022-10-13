@@ -34,6 +34,7 @@ void	cwd(char	**g_env)
 
 void	pwd(void)
 {
+	int		i;
 	char	*test;
 	char	*res;
 
@@ -41,8 +42,15 @@ void	pwd(void)
 	res = getcwd(test, 10);
 	if (res != NULL)
 	{
-		printf("%s\n", res);
-		free(res);
+		i = 0;
+		while (g_codes.g_env[i])
+		{
+			if (ft_strncmp(g_codes.g_env[i], "PWD=", 4) == 0)
+				printf("%s\n", ft_substr(g_codes.g_env[i], 4, ft_strlen(g_codes.g_env[i])));
+			i++;
+		}
+		// printf("%s\n", res);
+		// free(res);
 	}
 	else
 		cwd(g_codes.g_env);

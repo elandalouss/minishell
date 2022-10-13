@@ -52,32 +52,27 @@ int	buitin_exeution(t_cmd	*data)
 pid_t	exec_cmd(t_cmd *data)
 {
 	pid_t	f_pid;
-	int		i;
 
-	i = 0;
-	if (buitin_exeution(data) == -1)
+	f_pid = fork();
+	if (f_pid == -1)
 	{
-		f_pid = fork();
-		if (f_pid == -1)
-		{
-			ft_putendl_fd("fork(), allocation failed\n", 2);
-			exit(1);
-		}
-		if (f_pid == 0)
-		{
-				dup_files(data);
-				if (ft_strchr_int(data->av[0], '/') == -1)
-					get_path_split_join(data);
-					
-				else
-					data->cmd_path = data->av[0];
-				if (execve(data->cmd_path, data->av, g_codes.g_env) == -1)
-					check_stat(data, data->cmd_path);
+		ft_putendl_fd("fork(), allocation failed\n", 2);
+		exit(1);
+	}
+	if (f_pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		dup_files(data);
+		if (ft_strchr_int(data->av[0], '/') == -1)
+			get_path_split_join(data);
+		else
+			data->cmd_path = data->av[0];
+		if (execve(data->cmd_path, data->av, g_codes.g_env) == -1)
+			check_stat(data, data->cmd_path);
 		exit(g_codes.g_exit_code);
 	}
 	return (f_pid);
-	}
-	return (0); // choff hadchi 
 }
 
 int	execution_part(t_cmd	*data)
@@ -93,6 +88,7 @@ int	execution_part(t_cmd	*data)
 			ls_next_null(data, terminal);
 		else
 		{
+			signal(SIGINT, SIG_IGN);
 			while (data != NULL)
 			{
 				f_pid = ls_next_not_null(data, terminal);
