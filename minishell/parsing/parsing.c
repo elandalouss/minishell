@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:09:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/10 15:50:03 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/14 13:21:18 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,16 @@ void	open_file(t_token *token_r, t_token *token_w, t_cmd *cmd)
 	else if (token_w && token_w->e_type == TOKEN_DWRITE)
 		cmd->out_file_fd = open(token_w->next->word,
 				O_RDWR | O_APPEND);
-	if (cmd->out_file_fd == -1 || cmd->in_file_fd == -1)
+	if (cmd->out_file_fd == -1)
 	{
-		ft_putstr_fd("minishell: faild to open redirection files\n", 2);
+		perror(ft_strjoin("minishell : ", token_w->next->word));
+		//ft_putstr_fd("minishell: faild to open redirection files\n", 2);
+		g_codes.g_exit_code = 1;
+		g_codes.g_error_code = 1;
+	}
+	else if (cmd->in_file_fd == -1)
+	{
+		perror(ft_strjoin("minishell : ", token_r->next->word));
 		g_codes.g_exit_code = 1;
 		g_codes.g_error_code = 1;
 	}
