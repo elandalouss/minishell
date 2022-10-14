@@ -66,6 +66,8 @@ pid_t	exec_cmd_2(t_cmd *data)
 	}
 	if (f_pid == 0)
 	{
+		if (data->av == NULL && data->flag == 1)
+			printt_error("minishell", " ", "command not found", 127);
 		dup_files(data);
 		if (buitin_exeution(data) == -1)
 		{

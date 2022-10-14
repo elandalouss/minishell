@@ -62,6 +62,7 @@ void	printt_error(char *str1, char *str2, char *str3, int error_code)
 	ft_putstr_fd((char *)str2, 2);
 	write (2, ": ", 2);
 	ft_putendl_fd((char *)str3, 2);
+	g_codes.g_exit_code = error_code;
 	exit(error_code);
 }
 
