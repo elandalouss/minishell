@@ -18,7 +18,7 @@ void	check_stat(t_cmd	*data, char	*path)
 
 	if (stat(path, &buff) == -1)
 		printt_error("minishell", data->av[0], \
-			"No such file or directory", 1);
+			"No such file or directoryyyyyy", 1);
 	if (S_ISDIR(buff.st_mode))
 		printt_error("minishell", data->av[0], "is a directory", 126);
 	else if (!S_ISDIR(buff.st_mode) && \
@@ -84,10 +84,11 @@ int	execution_part(t_cmd	*data)
 	terminal[1] = dup(1);
 	if (g_codes.g_env != NULL)
 	{
-		if (data->av == NULL && data->flag == 1)
-			printt_error1("minishell", " ", "command not found", 127);
 		if (data->next == NULL)
+		{
+			signal(SIGINT, SIG_IGN);
 			ls_next_null(data, terminal);
+		}
 		else
 		{
 			signal(SIGINT, SIG_IGN);
@@ -99,6 +100,8 @@ int	execution_part(t_cmd	*data)
 			ft_wait(f_pid);
 		}
 	}
+	// if (data->av == NULL && data->flag == )
+	// 	printt_error1("minishell", " ", "command not found", 127);
 	else
 		ft_putendl_fd("No such file or directory", 2);
 	//system("leaks minishell");

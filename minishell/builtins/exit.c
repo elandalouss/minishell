@@ -33,18 +33,18 @@ int	ft_atoi_exit(char *str)
 		if (ft_isdigit(str[i]))
 			nbr = nbr * 10 + str[i++] - '0';
 		else
-			return (-1);
-		if (sign == 1 && nbr >= 9223372036854775807)
-			return (-1);
-		if (sign == -1 && nbr > 9223372036854775807)
-			return (-1);
+			printt_error("minishell: exit", str, "numeric argument required", 255);
+		if (sign == 1 && nbr > LONG_MAX)
+			printt_error("minishell: exit", str, "numeric argument required", 255);
+		if (sign == -1 && (nbr > 9223372036854775807))
+			printt_error("minishell: exit", str, "numeric argument required", 255);
 	}
 	return (sign * nbr);
 }
 
 void	exit_p(t_cmd	*data)
 {
-	int				exit_code;
+	long				exit_code;
 
 	printf("exit\n");
 	if (data->av[1] && data->av[2])
@@ -55,8 +55,6 @@ void	exit_p(t_cmd	*data)
 	if (data->av[1])
 	{
 		exit_code = ft_atoi_exit(data->av[1]);
-		if (exit_code == -1)
-			printt_error("minishell: exit", data->av[1], "numeric argument required", 255);
 		exit((unsigned char)exit_code);
 	}
 	exit(g_codes.g_exit_code);

@@ -36,7 +36,8 @@ void	get_path_split_join(t_cmd	*data)
 				break ;
 			i++;
 		}
-		data->cmd_path = arr[i];
+		data->cmd_path = ft_strdup(arr[i]);
+		free_tab(arr);
 		if (!data->cmd_path)
 			printt_error ("minishell", data->av[0], "command not found", 127);
 	}
@@ -57,7 +58,9 @@ int	one_cmd(t_cmd	*data)
 pid_t	exec_cmd_2(t_cmd *data)
 {
 	pid_t	f_pid;
+	static int i = 0;
 
+	i++;
 	f_pid = fork();
 	if (f_pid == -1)
 	{

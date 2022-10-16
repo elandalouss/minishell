@@ -23,7 +23,7 @@ void	check_stat_cd(t_cmd	*data, char	*path)
 		printt_error1("minishell", data->av[0], "Not a directory", 1);
 }
 
-void	old_new_pwd(const char	*str)
+void	new_pwd(const char	*str)
 {
 	int		i;
 	char	*buff;
@@ -86,5 +86,5 @@ void	cd(t_cmd	*data)
 		return ;
 	}
 	add_oldpwd(pwd);
-	old_new_pwd("PWD=");
+	new_pwd("PWD=");
 }

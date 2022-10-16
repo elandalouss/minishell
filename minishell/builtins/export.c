@@ -175,7 +175,7 @@ void	export_null(char	**tmp_env)
 		{
 			tmp3 = ft_substr(tmp_env[i], \
 				ft_strlen(tmp2[0]) + 1, ft_strlen(tmp_env[i]));
-			printf("declare -x %s = \"%s\"\n", tmp2[0], tmp3);
+			printf("declare -x %s=\"%s\"\n", tmp2[0], tmp3);
 			free(tmp3);
 		}
 		else

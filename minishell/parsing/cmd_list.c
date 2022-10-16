@@ -31,7 +31,8 @@ int	check_access_utils(t_token *tokens)
 		if (i == -1)
 		{
 			ft_print_error("minishell: ",
-				tokens->next->old_word, ": No such file or directory");
+				tokens->next->old_word, ": No such file or directoryyyyy");
+			g_codes.g_exit_code = 1; // a added this line here please check if everything good :)
 			return (-2);
 		}
 		else

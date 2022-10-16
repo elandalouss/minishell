@@ -15,10 +15,7 @@
 void	dup_stdin(t_cmd	*data)
 {
 	if (data->flag == 1 && data->in_file_fd == -2 && data->prev != NULL)
-	{
-		close (data->prev->pipe[1]);
 		dup2(data->prev->pipe[0], 0);
-	}
 	else if (data->flag == 1 && data->in_file_fd != 0)
 		dup2(data->in_file_fd, 0);
 }
@@ -70,5 +67,5 @@ void	ft_wait(pid_t	f_pid)
 			}
 		}
 	}
-	signal(SIGINT, handler);// signal ctl + c // to see
+	signal(SIGINT, handler);
 }
