@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 17:26:10 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/16 23:36:16 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/17 19:10:24 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,8 @@ void	remplissage_cmds(t_cmd *cmds, t_token *tokens)
 				}
 				else
 				{
+					// temp_r = (t_token *)((unsigned long)tokens * (tokens->e_type == TOKEN_DREAD
+					// 	|| tokens->e_type == TOKEN_READ));
 					if (tokens->e_type == TOKEN_DREAD
 						|| tokens->e_type == TOKEN_READ)
 						temp_r = tokens;

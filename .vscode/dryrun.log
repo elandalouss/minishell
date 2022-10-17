@@ -1,0 +1,7 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory `/Users/jchennak/Desktop/our_shell'
+ 
+make: Leaving directory `/Users/jchennak/Desktop/our_shell'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+

@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 21:58:31 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/17 15:57:55 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/17 19:09:50 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	handler(int code)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	g_codes.g_exit_code = 1;
 }
 
 int	main(int ac, char **av, char **env)
@@ -40,7 +41,7 @@ int	main(int ac, char **av, char **env)
 		if (str == NULL)
 		{
 			printf("exit\n");
-			exit(0);/*i need to exit with the last exit code */ // REGLER
+			exit(g_codes.g_exit_code);/*i need to exit with the last exit code */ // REGLER
 		}
 		add_history(str);// to see
 		cmds_line = parsing_part(str);

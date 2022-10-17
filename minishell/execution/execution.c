@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:24:15 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/16 21:17:46 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/17 17:18:19 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,14 @@ void	check_stat(t_cmd	*data, char	*path)
 
 	if (stat(path, &buff) == -1)
 		printt_error("minishell", data->av[0], \
-			"No such file or directory", 1);
+			"No such file or directory", 127);
 	if (S_ISDIR(buff.st_mode))
-		printt_error("minishell", data->av[0], "is a directory", 126);
+	{
+		if (data->av[0][0] == '\0')
+			printt_error1("minishell", " ", "command not found", 127);
+		else
+			printt_error("minishell", data->av[0], "is a directory", 126);
+	}
 	else if (!S_ISDIR(buff.st_mode) && \
 		data->av[0][ft_strlen(data->av[0]) - 1] == '/')
 		printt_error("minishell", data->av[0], "Not a directory", 126);
@@ -67,7 +72,7 @@ pid_t	exec_cmd(t_cmd *data)
 		if (ft_strchr_int(data->av[0], '/') == -1)
 			get_path_split_join(data);
 		else
-			data->cmd_path = data->av[0];
+			data->cmd_path = data->av[0];	
 		if (execve(data->cmd_path, data->av, g_codes.g_env) == -1)
 			check_stat(data, data->cmd_path);
 		exit(g_codes.g_exit_code);
@@ -100,8 +105,6 @@ int	execution_part(t_cmd	*data)
 			ft_wait(f_pid);
 		}
 	}
-	// if (data->av == NULL && data->flag == )
-	// 	printt_error1("minishell", " ", "command not found", 127);
 	else
 		ft_putendl_fd("No such file or directory", 2);
 	//system("leaks minishell");

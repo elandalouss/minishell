@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 06:12:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/16 23:35:28 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/17 16:46:22 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,8 @@ void	expander(t_token	*t)
 		{
 			c = ft_strdup(" ");
 			c[0] = t->old_word[i];
-			if (dq_flag == -2)
-				t->value[i] = 'Q';
+			//if (dq_flag == -2)
+			t->value[i] = 'Q' * (dq_flag == -2) + t->value[i] * (dq_flag != -2);
 			m = ft_strdup(" ");
 			m[0] = t->value[i];
 		}
