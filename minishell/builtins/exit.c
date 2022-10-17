@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 11:11:43 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/17 19:18:14 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/03 17:49:44 by aelandal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,14 @@ int	ft_atoi_exit(char *str)
 	while (str[i])
 	{
 		if (ft_isdigit(str[i]))
-		{
 			nbr = nbr * 10 + str[i++] - '0';
-			if (nbr > LONG_MAX)
-				printt_error("minishell: exit", str, "numeric argument required", 255);
-		}
 		else
 			printt_error("minishell: exit", str, "numeric argument required", 255);
 		if (sign == 1 && nbr > LONG_MAX)
 			printt_error("minishell: exit", str, "numeric argument required", 255);
-		if (sign == -1 && (nbr > 9223372036854775807))
+		else if ((nbr - 1) > LONG_MAX) 
+			printt_error("minishell: exit", str, "numeric argument required", 255);
+		else if (nbr > ULONG_MAX)
 			printt_error("minishell: exit", str, "numeric argument required", 255);
 	}
 	return (sign * nbr);
