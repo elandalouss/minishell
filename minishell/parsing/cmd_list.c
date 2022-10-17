@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 15:08:35 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/10 14:04:21 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/16 20:58:44 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	check_access_utils(t_token *tokens)
 		{
 			ft_print_error("minishell: ",
 				tokens->next->old_word, ": No such file or directoryyyyy");
-			g_codes.g_exit_code = 1; // a added this line here please check if everything good :)
+			g_codes.g_exit_code = 1;
 			return (-2);
 		}
 		else

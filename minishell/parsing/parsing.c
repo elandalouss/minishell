@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:09:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/14 13:21:18 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:39:23 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	open_file(t_token *token_r, t_token *token_w, t_cmd *cmd)
 	if (cmd->out_file_fd == -1)
 	{
 		perror(ft_strjoin("minishell : ", token_w->next->word));
-		//ft_putstr_fd("minishell: faild to open redirection files\n", 2);
 		g_codes.g_exit_code = 1;
 		g_codes.g_error_code = 1;
 	}
@@ -68,30 +67,9 @@ t_cmd	*parsing_part(char *str)
 	heredoc_racine(content.tokens);
 	if (g_codes.g_error_code != 0)
 		return (NULL);
-/* ***********/
-	// t_token *temps;
-	// temps = content.tokens;
-	// while (temps)
-	// {
-	// 	printf("old word %s\n", temps->old_word);
-	// 	printf("new word %s\n", temps->word);
-	// 	temps = temps->next;
-	// }
-/* ***********/
 	removing_qoutes_and_expand(content.tokens);
 	if (g_codes.g_error_code != 0)
 		return (NULL);
-//	printf("========================\n");
-/* ***********/
-	// t_token *tems;
-	// tems = content.tokens;
-	// while (tems)
-	// {
-	// 	printf("old word %s\n", tems->old_word);
-	// 	printf("new word %s\n", tems->word);
-	// 	tems = tems->next;
-	// }
-/* ***********/
 	cmds_line = list_init(content.tokens);
 	remplissage_cmds(cmds_line, content.tokens);
 	if (g_codes.g_error_code != 0)

@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 06:12:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/10 15:48:11 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:35:28 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,10 @@ void	removing_qoutes_and_expand(t_token	*tokens)
 		{
 			expander(tokens);
 			free(tokens->old_word);
+			if (tokens->word == NULL)
+				tokens->word = ft_strdup("");
 			tokens->old_word = ft_strdup(tokens->word);
+			
 		}
 		if (tokens->word == NULL || (ft_charset_chr(tokens->word, " \t\n") >= 0
 				&& tokens->value[ft_charset_chr(tokens->word, " \t\n")] == 'u'))

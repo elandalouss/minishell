@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 17:26:10 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/10 13:57:55 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:36:16 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,86 @@ char	*exit_code_expander(char *str, int index, char *meta)
 	free(str);
 	return (new_word);
 }
+
+/*ici je remplirre la liste des commande :D*/
+// void	remplissage_cmds(t_cmd *cmds, t_token *tokens)
+// {
+// 	t_token		*temp_r;
+// 	t_token		*temp_w;
+// 	char		**tmp;
+
+// 	while (cmds)
+// 	{
+// 		temp_r = NULL;
+// 		temp_w = NULL;
+// 		while (tokens)
+// 		{
+// 			if (tokens->word == NULL && tokens->e_type != TOKEN_RDIR_AMBIGU)
+// 			{
+// 				tokens = tokens->next;
+// 				continue ;
+// 			}
+// 			if (tokens->e_type >= TOKEN_READ && tokens->e_type < TOKEN_RDIR_AMBIGU)
+// 			{
+// 				if (check_access(tokens) == -1)
+// 				{
+// 					cmds->flag = NOT_EXEC;
+// 					tokens = skip_noeud(tokens); // :D happy
+// 					if (tokens != NULL)
+// 						tokens = tokens->next;
+// 					break ;
+// 				//	g_codes.g_exit_code = 1;//
+// 				//	g_codes.g_error_code = 1;//i guess no :)
+// 					//you need to skip to the next pipe
+// 				}
+// 				else
+// 				{
+// 					if (tokens->e_type == TOKEN_DREAD
+// 						|| tokens->e_type == TOKEN_READ)
+// 						temp_r = tokens;
+// 					if (tokens->e_type == TOKEN_DWRITE
+// 						|| tokens->e_type == TOKEN_WRITE)
+// 						temp_w = tokens;
+// 					if (tokens != NULL)
+// 						tokens = tokens->next;
+// 				}
+// 			}
+// 			else if (tokens->e_type == TOKEN_WORD)
+// 			{
+// 				// printf ("word %s , old %s , meta %s\n",tokens->word, tokens->old_word, tokens->value);
+// 				if (ft_strchr(tokens->word, '$'))
+// 					tokens->word = exit_code_expander(tokens->word, cmds->index, tokens->value);
+				
+// 				cmds->av = my_args(cmds->av, tokens->word);
+// 			}
+// 			else if (tokens->e_type == TOKEN_RDIR_AMBIGU)
+// 			{
+// 				tmp = split_all(tokens->word);//
+// 				printf("we are inside\n");
+// 				while (*tmp)
+// 				{
+// 					cmds->av = my_args(cmds->av, *tmp);
+// 					free(*tmp);
+// 					tmp++;
+// 				}
+// 			}
+// 			else
+// 			{
+// 				tokens = tokens->next;
+// 				break ;
+// 			}
+// 			tokens = tokens->next;
+// 		}
+// 		if (cmds->flag == TO_EXECUT && (temp_r || temp_w))
+// 		{
+// 			open_file(temp_r, temp_w, cmds);
+// 		}
+// 		if (g_codes.g_error_code != 0)
+// 			return ;
+// 		cmds = cmds->next;
+// 	}
+// }
+
 
 /*ici je remplirre la liste des commande :D*/
 void	remplissage_cmds(t_cmd *cmds, t_token *tokens)

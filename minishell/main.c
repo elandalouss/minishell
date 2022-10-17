@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 21:58:31 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/12 00:33:06 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/17 15:57:55 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,28 +46,28 @@ int	main(int ac, char **av, char **env)
 		cmds_line = parsing_part(str);
 		if (g_codes.g_error_code != 0)
 			continue ;// I GUESS NO NEED TO CHECK IF CMDS_LINE IS null
-	t_cmd *temp;
-	temp = cmds_line;
-	int i = 0;
-	while (temp)
-	{
-		printf("========================\n");
-		printf("index is        %d \n", temp->index);
-		printf("flag is         %d \n", temp->flag);
-		printf("in_file fd is 	%d \n", temp->in_file_fd);
-		printf("out_file fd is	%d \n", temp->out_file_fd);
-		i = 0;
-		printf("av is : \n");
-		while (temp->av && temp->av[i])
-			printf("|%s|\n", temp->av[i++]);
-		printf("========================\n");
-		temp = temp->next;
-	}
+	// t_cmd *temp;
+	// temp = cmds_line;
+	// int i = 0;
+	// while (temp)
+	// {
+	// 	printf("========================\n");
+	// 	printf("index is        %d \n", temp->index);
+	// 	printf("flag is         %d \n", temp->flag);
+	// 	printf("in_file fd is 	%d \n", temp->in_file_fd);
+	// 	printf("out_file fd is	%d \n", temp->out_file_fd);
+	// 	i = 0;
+	// 	printf("av is : \n");
+	// 	while (temp->av && temp->av[i])
+	// 		printf("|%s|\n", temp->av[i++]);
+	// 	printf("========================\n");
+	// 	temp = temp->next;
+	// }
 		// printf("je suis entrain d'excuter :P\n");
 		//==============================================>handl the "" case, this message for me not you
 		execution_part(cmds_line);
 		ft_free_cmds(&cmds_line);
 		//system("leaks minishell");
 	}
-	return (0);
+	return (g_codes.g_exit_code);
 }

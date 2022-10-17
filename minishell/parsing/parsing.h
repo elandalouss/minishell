@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:06:29 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/01 14:57:21 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/16 21:02:16 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ void			heredoc_racine(t_token	*tokens);
 char			*expand(char *str, char c, char flag, char *word);
 char			*check_word_in_env(char	*word);
 void			extra_free(char *s1, char *s2, char flag);
+void			herdoc_racine_utils(int i, t_token *temp);
 
 //NEW LIBFT-FUNCTION
 char			*ft_extrajoin(char *s1, char *s2, char flag);
@@ -157,7 +158,6 @@ char			**ft_freeall(char **tab, int i);
 char			**allocationlpl(char **str, char *av, int n);
 void			ft_remplissage(char **str, char *av, int n);
 char			**split_all(char *av);
-
 void			handler(int code);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 15:38:56 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/02 02:24:05 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/16 21:03:03 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,8 @@ void	remplissage_doc(int flag, int fd, char *limiter)
 	char	*tmp;
 
 	str = readline(">");
-	if(str == NULL)
-	{
-		printf ("ffffff\n");
+	if (str == NULL)
 		return ;
-	}
 	while (str && ft_strncmp(str, limiter, ft_strlen(limiter) + 1))
 	{
 		if (flag && ft_strchr(str, '$'))

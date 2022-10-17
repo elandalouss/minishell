@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:24:15 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/11 23:12:02 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/16 21:17:46 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	check_stat(t_cmd	*data, char	*path)
 
 	if (stat(path, &buff) == -1)
 		printt_error("minishell", data->av[0], \
-			"No such file or directoryyyyyy", 1);
+			"No such file or directory", 1);
 	if (S_ISDIR(buff.st_mode))
 		printt_error("minishell", data->av[0], "is a directory", 126);
 	else if (!S_ISDIR(buff.st_mode) && \
