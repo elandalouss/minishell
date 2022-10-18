@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:23:24 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/08 13:35:47 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/18 06:11:14 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ pid_t	ls_next_not_null(t_cmd *data, int *terminal);
 void	check_stat(t_cmd	*data, char	*path);
 int		one_cmd(t_cmd	*data);
 pid_t	exec_cmd(t_cmd *data);
+void	ft_close_all(t_cmd *data);
 pid_t	exec_cmd_2(t_cmd *data);
 void	get_path_split_join(t_cmd	*data);
 void	ft_wait(pid_t	f_pid);

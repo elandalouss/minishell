@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 10:04:30 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/08 15:21:52 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/18 03:13:25 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,23 @@ char	**copy_2d(char **str1, char **str2)
 	return (str1);
 }
 
-int	check_builtin_error(t_cmd	*data)
+int	check_builtin_error(char *str)
 {
 	int	i;
-	int	j;
-
-	i = 1;
-	while (data->av[i])
+	
+	if (str[0] == '#' || str[0] == '$')
+		return (-2);
+	else
 	{
-		j = 0;
-		while (data->av[i][j])
+		if (ft_isdigit(str[0]))
+			return (-1);
+		i = 1;
+		while (str[i] && str[i] != '=')
 		{
-			if ((data->av[i][j] < 'a' || data->av[i][j] > 'z')
-				&& (data->av[i][j] < 'A' || data->av[i][j] > 'Z')
-					&& data->av[i][j] != '#' && data->av[i][j] != '_')
+			if (!ft_isalnum(str[i]) && str[i] != '_')
 				return (-1);
-			j++;
+			i++;
 		}
-		i++;
 	}
 	return (1);
 }
@@ -58,11 +57,10 @@ void	unset(t_cmd	*data)
 
 	i = 1;
 	ln_env_cnt = 0;
-	if (check_builtin_error(data) == -1)
+	if (check_builtin_error(data->av[i]) == -1)
 	{
 		printt_error1("./minishell: unset", data->av[i], \
 			": not a valid identifier", 1);
-		return ;	
 	}
 	while (g_codes.g_env[ln_env_cnt])
 		ln_env_cnt++;

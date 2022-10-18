@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 15:08:35 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/16 20:58:44 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/18 00:13:57 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	check_access(t_token *tokens)
 {
 	int	i;
 
-	if (tokens->next->e_type == TOKEN_RDIR_AMBIGU)
+	if (tokens->next->e_type == TOKEN_RDAMB)
 	{
 		ft_print_error("minishell: ",
 			tokens->next->old_word, ": ambiguous redirect");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 06:39:22 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/08 17:52:46 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/18 06:17:19 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ void	add_oldpwd(char	*str)
 	while (g_codes.g_env[i])
 	{
 		if (ft_strncmp(g_codes.g_env[i], "OLDPWD=", 7) == 0)
-			g_codes.g_env[i] = ft_strdup(ft_strjoin("OLDPWD=", ft_substr(str, 4, ft_strlen(str))));
+			g_codes.g_env[i] = ft_strdup(ft_strjoin("OLDPWD=" \
+				, ft_substr(str, 4, ft_strlen(str))));
 		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:24:15 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/17 17:18:19 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/18 06:10:28 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	buitin_exeution(t_cmd	*data)
 		return (-1);
 	return (1);
 }
- 
+
 pid_t	exec_cmd(t_cmd *data)
 {
 	pid_t	f_pid;
@@ -72,12 +72,24 @@ pid_t	exec_cmd(t_cmd *data)
 		if (ft_strchr_int(data->av[0], '/') == -1)
 			get_path_split_join(data);
 		else
-			data->cmd_path = data->av[0];	
+			data->cmd_path = data->av[0];
 		if (execve(data->cmd_path, data->av, g_codes.g_env) == -1)
 			check_stat(data, data->cmd_path);
 		exit(g_codes.g_exit_code);
 	}
 	return (f_pid);
+}
+
+void	ft_close_all(t_cmd *data)
+{
+	while (data)
+	{
+		if (data->in_file_fd != 0 && data->in_file_fd != -2)
+			close(data->in_file_fd);
+		if (data->out_file_fd != 1 && data->out_file_fd != -2)
+			close(data->out_file_fd);
+		data = data->next;
+	}
 }
 
 int	execution_part(t_cmd	*data)
@@ -96,7 +108,6 @@ int	execution_part(t_cmd	*data)
 		}
 		else
 		{
-			signal(SIGINT, SIG_IGN);
 			while (data != NULL)
 			{
 				f_pid = ls_next_not_null(data, terminal);
@@ -107,6 +118,5 @@ int	execution_part(t_cmd	*data)
 	}
 	else
 		ft_putendl_fd("No such file or directory", 2);
-	//system("leaks minishell");
 	return (g_codes.g_exit_code % 255);
 }

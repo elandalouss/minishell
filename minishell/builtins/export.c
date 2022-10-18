@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 08:55:32 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/12 00:45:10 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/18 06:54:20 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,22 @@ void	free_tab(char **arr)
 
 int	check_export_error(char *str)
 {
+	int	i;
+
 	if (str[0] == '#' || str[0] == '$')
 		return (-2);
-	else if ((str[0] < 'a' || str[0] > 'z') && (str[0] < 'A' \
-		|| str[0] > 'Z') && str[0] != '_')
-		return (-1);
+	else
+	{
+		if (ft_isdigit(str[0]))
+			return (-1);
+		i = 1;
+		while (str[i] && str[i] != '=')
+		{
+			if (!ft_isalnum(str[i]) && str[i] != '_')
+				return (-1);
+			i++;
+		}
+	}
 	return (1);
 }
 
@@ -78,51 +89,60 @@ int	theres_eq(char *str)
 	return (0);
 }
 
+void	free_env(char *av)
+{
+	char	**temp;
+
+	if (!theres_eq(av))
+	{
+		temp = g_codes.g_env;
+		my_env(g_codes.g_env, av);
+		free_tab(temp);
+	}		
+}
+
+void	add_env(char *av)
+{
+	int		i;
+	char	**arr_av;
+	int		big_lenght;
+	char	**arr_env;
+
+	arr_av = ft_split(av, '=');
+	i = 0;
+	while (g_codes.g_env[i])
+	{
+		arr_env = ft_split(g_codes.g_env[i], '=');
+		if (ft_strlen(arr_av[0]) >= ft_strlen(arr_env[0]))
+			big_lenght = ft_strlen(arr_av[0]);
+		else
+			big_lenght = ft_strlen(arr_env[0]);
+		if (cmp_without_equal(arr_av[0], arr_env[0], big_lenght) == 0)
+		{
+			g_codes.g_env[i] = ft_strdup(av);
+			return ;
+		}
+		i++;
+		free_tab(arr_env);
+	}
+	free_env(av);
+	free_tab(arr_av);
+}
+
 int	cmp(char	*av)
 {
 	int		i;
 	int		j;
-	int		big_lenght;
-	char	**arr_av;
-	char	**arr_env;
 
 	if (ft_strchr_int(av, '=') == 1)
-	{
-		arr_av = ft_split(av, '=');
-		i = 0;
-		while (g_codes.g_env[i])
-		{
-
-			arr_env = ft_split(g_codes.g_env[i], '=');
-			if (ft_strlen(arr_av[0]) >= ft_strlen(arr_env[0]))
-				big_lenght = ft_strlen(arr_av[0]);
-			else
-				big_lenght = ft_strlen(arr_env[0]);
-			if (cmp_without_equal(arr_av[0], arr_env[0], big_lenght) == 0)
-			{
-				g_codes.g_env[i] = ft_strdup(av);
-				return (0);
-			}
-			i++;
-		free_tab(arr_env);
-		}
-
-		if (!theres_eq(av))
-		{
-			char **temp;
-			temp = g_codes.g_env;
-			my_env(g_codes.g_env, av);
-			free_tab(temp);
-		}
-		free_tab(arr_av);   
-	}
+		add_env(av);
 	else
 	{
 		i = 0;
 		j = 0;
 		while (g_codes.g_env[i])
 		{
-			if (cmp_without_equal(av, g_codes.g_env[i], ft_strlen(av)) != 0)
+			if (cmp_without_equal(av, g_codes.g_env[i], ft_strlen(av) + 1) != 0)
 			{
 				i++;
 				j++;
@@ -136,10 +156,28 @@ int	cmp(char	*av)
 	return (0);
 }
 
+void	cmp_str_env(char **tmp_env)
+{
+	int 	i;
+	char	*tmp;
+	
+	i = 0;
+	while (tmp_env[i + 1] != NULL)
+	{
+		if (cmp_env(tmp_env[i], tmp_env[i + 1]) == -1)
+		{
+			tmp = tmp_env[i];
+			tmp_env[i] = tmp_env[i + 1];
+			tmp_env[i + 1] = tmp;
+			i = -1;
+		}
+		i++;
+	}
+}
+
 void	export_null(char	**tmp_env)
 {
 	int				i;
-	char			*tmp;
 	char			*tmp3;
 	char			**tmp2;
 
@@ -155,18 +193,7 @@ void	export_null(char	**tmp_env)
 		tmp_env[i] = ft_strdup(g_codes.g_env[i]);
 		i++;
 	}
-	i = 0;
-	while (tmp_env[i + 1] != NULL)
-	{
-		if (cmp_env(tmp_env[i], tmp_env[i + 1]) == -1)
-		{
-			tmp = tmp_env[i];
-			tmp_env[i] = tmp_env[i + 1];
-			tmp_env[i + 1] = tmp;
-			i = -1;
-		}
-		i++;
-	}
+	cmp_str_env(tmp_env);
 	i = 0;
 	while (tmp_env[i] != NULL)
 	{
@@ -188,8 +215,8 @@ void	export_null(char	**tmp_env)
 
 void	export(t_cmd	*data)
 {
-	int				i;
 	char			**tmp_env;
+	int				i;
 
 	tmp_env = ft_calloc(env_len(g_codes.g_env) + 1, sizeof(char *));
 	if (data->av[1] == NULL)

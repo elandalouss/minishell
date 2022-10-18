@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 18:45:17 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/08 18:08:14 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/18 06:27:58 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	cwd(void)
 	{
 		if (ft_strncmp(g_codes.g_env[i], "PWD=", 4) == 0)
 		{
-			printf("%s\n", ft_substr(g_codes.g_env[i], 4, ft_strlen(g_codes.g_env[i])));
+			printf("%s\n", ft_substr(g_codes.g_env[i], 4, \
+				ft_strlen(g_codes.g_env[i])));
 			break ;
 		}
 		i++;

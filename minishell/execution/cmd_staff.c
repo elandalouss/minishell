@@ -3,45 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_staff.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 14:23:31 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/10 12:58:40 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/18 06:02:54 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-
-void	get_path_split_join(t_cmd	*data)
-{
-	int		i;
-	char	**arr;
-
-	i = 0;
-	if (g_codes.g_env[i])
-	{
-		while (g_codes.g_env[i])
-		{
-			if (ft_strncmp(g_codes.g_env[i], "PATH=", 5) == 0)
-				break ;
-			i++;
-		}
-		arr = ft_split(g_codes.g_env[i], ':');
-		i = 0;
-		while (arr[i])
-		{
-			arr[i] = ft_strjoin(arr[i], "/");
-			arr[i] = ft_strjoin(arr[i], data->av[0]);
-			if (access(arr[i], X_OK) == 0)
-				break ;
-			i++;
-		}
-		data->cmd_path = ft_strdup(arr[i]);
-		free_tab(arr);
-		if (!data->cmd_path)
-			printt_error ("minishell", data->av[0], "command not found", 127);
-	}
-}
 
 int	one_cmd(t_cmd	*data)
 {
@@ -58,15 +27,10 @@ int	one_cmd(t_cmd	*data)
 pid_t	exec_cmd_2(t_cmd *data)
 {
 	pid_t	f_pid;
-	static int i = 0;
 
-	i++;
 	f_pid = fork();
 	if (f_pid == -1)
-	{
-		ft_putendl_fd("fork(), allocation failed\n", 2);
-		exit(1);
-	}
+		printt_error("ERROR!", "fork()", "allocation failed", 1);
 	if (f_pid == 0)
 	{
 		if (data->av == NULL && data->flag == 1)

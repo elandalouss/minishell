@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelandal <aelandal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 11:11:43 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/03 17:49:44 by aelandal         ###   ########.fr       */
+/*   Updated: 2022/10/18 06:50:13 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	atoi_sign(char *str, int	*i)
+{
+	int				sign;
+
+	sign = 1;
+	*i = 0;
+	if (str[*i] == '-' || str[*i] == '+')
+	{
+		if (str[*i] == '-')
+			sign = -1;
+		(*i)++;
+	}
+	return (sign);
+}
 
 int	ft_atoi_exit(char *str)
 {
@@ -18,28 +33,21 @@ int	ft_atoi_exit(char *str)
 	unsigned long	nbr;
 	int				sign;
 
-	sign = 1;
-	i = 0;
+	sign = atoi_sign(str, &i);
 	nbr = 0;
-
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign = -1;
-		i++;
-	}
 	while (str[i])
 	{
 		if (ft_isdigit(str[i]))
 			nbr = nbr * 10 + str[i++] - '0';
 		else
-			printt_error("minishell: exit", str, "numeric argument required", 255);
+			printt_error("minishell: exit", str, \
+				"numeric argument required", 255);
 		if (sign == 1 && nbr > LONG_MAX)
-			printt_error("minishell: exit", str, "numeric argument required", 255);
-		else if ((nbr - 1) > LONG_MAX) 
-			printt_error("minishell: exit", str, "numeric argument required", 255);
-		else if (nbr > ULONG_MAX)
-			printt_error("minishell: exit", str, "numeric argument required", 255);
+			printt_error("minishell: exit", str, \
+				"numeric argument required", 255);
+		else if ((nbr - 1) > LONG_MAX)
+			printt_error("minishell: exit", str, \
+				"numeric argument required", 255);
 	}
 	return (sign * nbr);
 }

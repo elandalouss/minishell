@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 13:03:19 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/16 17:41:43 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/18 01:19:03 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,4 @@ void	heredoc_racine(t_token	*tokens)
 			temp = temp->next;
 		}
 	}
-}
-
-void	herdoc_racine_utils(int i, t_token *temp)
-{
-	temp->next->word = get_file_name(i);
-	temp->next->value = ft_strdup("uuuuuuuuuuuuuuuuuu");
 }

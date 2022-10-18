@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 15:38:56 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/16 21:03:03 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/18 01:19:26 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,10 @@ void	remplissage_doc(int flag, int fd, char *limiter)
 	}
 	if (str)
 		free(str);
+}
+
+void	herdoc_racine_utils(int i, t_token *temp)
+{
+	temp->next->word = get_file_name(i);
+	temp->next->value = ft_strdup("uuuuuuuuuuuuuuuuuu");
 }

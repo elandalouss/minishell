@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:06:29 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/16 21:02:16 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/18 01:21:15 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,15 @@ typedef struct s_global
 	char	**g_env;
 }	t_global;
 
+typedef struct s_xpnd
+{
+	int		i;
+	char	*c;
+	char	*m;
+	char	*m_helper;
+	char	dq_flag;
+}	t_xpnd;
+
 t_global				g_codes;
 
 /******* lexer data ********/
@@ -56,7 +65,7 @@ typedef struct s_token
 		TOKEN_DREAD,
 		TOKEN_WRITE,
 		TOKEN_DWRITE,
-		TOKEN_RDIR_AMBIGU
+		TOKEN_RDAMB
 	}	e_type;
 	char			*value;
 	char			*word;
@@ -142,6 +151,10 @@ void			removing_qoutes_and_expand(t_token	*tokens);
 char			*to_expand(char *str, int *i, char dq_flag);
 int				ft_charset_chr(char	*s1, char	*charset);
 void			expander(t_token	*t);
+void			expander_utils(t_xpnd	*vars, t_token	*t);
+void			expander_utils1(t_xpnd	*vars, t_token	*t);
+char			change_flag(char dq_flag, char value);
+void			expander_init(t_xpnd	*vars, t_token	*t);
 
 /*remplissage de la liste des commande :D*/
 //cmd_list.c
@@ -150,6 +163,16 @@ t_cmd			*list_init(t_token *tokens);
 void			remplissage_cmds(t_cmd *cmds, t_token *tokens);
 int				check_access(t_token *tokens);
 char			**my_args(char **av, char *to_add);
+int				function(t_token **tkn, t_cmd **cmds);
+void			r_c_u(t_token **tkn, t_cmd **cmds \
+	, t_token **t_r, t_token **t_w);
+void			remplissage_cmds(t_cmd *cmds, t_token *tokens);
+void			expander_and_args(t_token **tokens, t_cmd **cmds);
+void			expander_exit_and_remplissage(t_token **tokens, t_cmd **cmds);
+void			take_file_name(t_token **tkn, t_token **t_r, t_token **t_w);
+void			remplissage_args(t_cmd **cmds, t_token **tokens);
+void			change_flag_and_skip_noeuds(t_cmd **cmds, t_token **tokens);
+char			*exit_code_expander(char *str, int index, char *meta);
 
 // normale split :D
 //split_all.c
