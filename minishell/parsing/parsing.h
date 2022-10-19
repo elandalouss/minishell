@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:06:29 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/18 01:21:15 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/19 01:56:30 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,5 +182,7 @@ char			**allocationlpl(char **str, char *av, int n);
 void			ft_remplissage(char **str, char *av, int n);
 char			**split_all(char *av);
 void			handler(int code);
+int				check_error_code(t_data *content);
+
 
 #endif

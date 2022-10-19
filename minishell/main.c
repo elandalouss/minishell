@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 21:58:31 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/18 06:15:25 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/19 04:59:20 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,13 @@ int	main(int ac, char **av, char **env)
 		add_history(str);
 		cmds_line = parsing_part(str);
 		if (g_codes.g_error_code != 0)
+		{
+			ft_close_all(cmds_line);
+			ft_free_cmds(&cmds_line);
 			continue ;
+		}
 		execution_part(cmds_line);
+
 		ft_close_all(cmds_line);
 		ft_free_cmds(&cmds_line);
 	}

@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:23:24 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/18 06:11:14 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/19 03:29:15 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,22 @@ void	printt_error(char *str1, char *str2, char *str3, int error_code);
 void	printt_error1(char *str1, char *str2, char *str3, int error_code);
 int		buitin_exeution(t_cmd	*data);
 void	ls_next_null(t_cmd *data, int *terminal);
+int		cmp_without_equal(const char *s1, const char *s2, size_t n);
 pid_t	ls_next_not_null(t_cmd *data, int *terminal);
 void	check_stat(t_cmd	*data, char	*path);
 int		one_cmd(t_cmd	*data);
 pid_t	exec_cmd(t_cmd *data);
 void	ft_close_all(t_cmd *data);
+int		cmp_env(char *str1, char *str2);
+void	cmp_str_env(char **tmp_env);
+void	free_my_env(char	*av);
 pid_t	exec_cmd_2(t_cmd *data);
+int		cmp(char	*av);
+int		check_builtin_error(char *str);
+char	**copy_2d(char **str1, char **str2);
+int		check_export_error(char *str);
 void	get_path_split_join(t_cmd	*data);
+int		theres_eq(char *str);
 void	ft_wait(pid_t	f_pid);
 void	unset(t_cmd *data);
 void	echo(t_cmd	*data);

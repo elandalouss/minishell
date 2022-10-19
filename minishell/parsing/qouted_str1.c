@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 01:14:10 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/18 01:21:39 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/19 01:07:24 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,13 @@ void	expander_init(t_xpnd	*vars, t_token	*t)
 	vars->m_helper = NULL;
 }
 
+void	free_expand(t_token	*t, t_xpnd	*vars)
+{
+	free (t->value);
+	t->value = vars->m_helper;
+	free (vars);
+}
+
 void	expander(t_token	*t)
 {
 	t_xpnd	*vars;
@@ -70,6 +77,5 @@ void	expander(t_token	*t)
 		vars->m_helper = ft_extrajoin(vars->m_helper, vars->m, FREE_ALL);
 		vars->i++;
 	}
-	free (t->value);
-	t->value = vars->m_helper;
+	free_expand(t, vars);
 }

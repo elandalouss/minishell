@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 22:09:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/16 23:39:23 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/19 01:58:14 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,18 @@ t_cmd	*parsing_part(char *str)
 		return (NULL);
 	}
 	error_management(&content);
-	if (g_codes.g_error_code != 0)
-		return (NULL);
+	if (check_error_code(&content) == 0)	
+	 	return (NULL);
 	heredoc_racine(content.tokens);
-	if (g_codes.g_error_code != 0)
-		return (NULL);
+	if (check_error_code(&content) == 0)	
+	 	return (NULL);
 	removing_qoutes_and_expand(content.tokens);
-	if (g_codes.g_error_code != 0)
-		return (NULL);
+	if (check_error_code(&content) == 0)	
+	 	return (NULL);
 	cmds_line = list_init(content.tokens);
 	remplissage_cmds(cmds_line, content.tokens);
-	if (g_codes.g_error_code != 0)
-		return (NULL);
+	if (check_error_code(&content) == 0)	
+	 	return (NULL);
 	ft_free_list(&content.tokens);
 	ft_free_content(&content);
 	return (cmds_line);

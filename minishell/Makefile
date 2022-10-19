@@ -28,16 +28,19 @@ SRCS =  main.c \
 		builtins/cd.c \
 		builtins/pwd.c \
 		builtins/unset.c \
+		builtins/unset1.c \
 		builtins/env.c \
 		builtins/exit.c \
 		builtins/export.c \
+		builtins/export1.c \
+		builtins/export2.c \
 
 
 OBJS = $(SRCS:.c=.o)
 
 CC = @cc
 
-CFLAGS = -Wall -Wextra -Werror -I /Users/$(USER)/readline/include  -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I /Users/$(USER)/readline/include  #-g -fsanitize=address
 
 
 RM = rm -f

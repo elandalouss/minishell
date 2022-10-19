@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 06:12:42 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/18 01:14:50 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/19 00:44:09 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	removing_qoutes_and_expand(t_token	*tokens)
 	i = 0;
 	while (tokens)
 	{
-		if (ft_strchr(tokens->value, 'x'))
+		if (ft_strchr(tokens->value, 'x'))	
 			expander(tokens);
 		else
 		{

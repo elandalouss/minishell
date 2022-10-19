@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 00:29:58 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/18 00:31:12 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/19 01:57:41 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,15 @@ void	remplissage_cmds(t_cmd *cmds, t_token *tokens)
 			return ;
 		cmds = cmds->next;
 	}
+}
+
+int check_error_code(t_data *content)
+{
+	if (g_codes.g_error_code != 0)
+	{
+		ft_free_list(&(content->tokens));
+		ft_free_content(content);
+		return (0);
+	}
+	return (1);
 }

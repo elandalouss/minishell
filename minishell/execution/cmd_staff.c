@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 14:23:31 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/18 06:02:54 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/19 03:20:46 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,11 @@ pid_t	exec_cmd_2(t_cmd *data)
 		printt_error("ERROR!", "fork()", "allocation failed", 1);
 	if (f_pid == 0)
 	{
-		if (data->av == NULL && data->flag == 1)
-			printt_error("minishell", " ", "command not found", 127);
 		dup_files(data);
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (buitin_exeution(data) == -1)
 		{
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
 			if (ft_strchr_int(data->av[0], '/') == -1)
 				get_path_split_join(data);
 			else
@@ -74,6 +72,8 @@ pid_t	multi_pipes(t_cmd	*data)
 void	ls_next_null(t_cmd *data, int *terminal)
 {
 	dup_files(data);
+	// signal(SIGINT, SIG_DFL);
+	// signal(SIGQUIT, SIG_DFL);
 	if (buitin_exeution(data) == -1)
 		one_cmd(data);
 	reset_std(terminal);
