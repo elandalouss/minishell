@@ -51,7 +51,7 @@ int	main(int ac, char **av, char **env)
 			continue ;
 		execution_part(cmds_line);
 		ft_close_all(cmds_line);
-		ft_free_cmds(&cmds_line);
+		//ft_free_cmds(&cmds_line);
 	}
 	return (g_codes.g_exit_code);
 }

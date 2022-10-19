@@ -29,11 +29,14 @@ int	check_export_error(char *str)
 {
 	int	i;
 
+	if (str[0] == '=')
+		return (-1);
 	if (str[0] == '#' || str[0] == '$')
 		return (-2);
 	else
 	{
-		if (ft_isdigit(str[0]))
+		if (ft_isdigit(str[0]) || (str[0] < 'a' && str[0] > 'z') \
+			|| (str[0] < 'A' && str[0] > 'Z'))
 			return (-1);
 		i = 1;
 		while (str[i] && str[i] != '=')

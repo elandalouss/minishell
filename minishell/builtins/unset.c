@@ -82,9 +82,9 @@ void	unset(t_cmd	*data)
 	ln_env_cnt = 0;
 	if (!data->av[1])
 		return ;
-	ln_env_cnt = count_len(data->av[i]);
 	while (data->av[i])
 	{
+		ln_env_cnt = count_len(data->av[i]);
 		tmpy = ft_strdup(data->av[i]);
 		free(data->av[i]);
 		data->av[i] = ft_strjoin(tmpy, "=");

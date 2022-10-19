@@ -71,23 +71,23 @@ void	export(t_cmd	*data)
 	char			**tmp_env;
 
 	tmp_env = NULL;
-	if (g_codes.g_env[0] == NULL)
-		return ;
-	if (data->av[1] == NULL)
+	i = 1;
+	if (data->av[1] == NULL || check_export_error(data->av[i]) == -2)
+	{
+		if (g_codes.g_env[0] == NULL)
+			return ;
 		export_null(tmp_env);
+	}
 	else if (data->av[1] != NULL)
 	{
-		i = 1;
 		while (data->av[i])
 		{
-			theres_eq(data->av[i]);
-			if (check_export_error(data->av[i]) == -2)
+			if (check_export_error(data->av[i]) == -1)
 			{
-				export_null(tmp_env);
-				return ;
-			}
-			else if (check_export_error(data->av[i]) == -1)
 				print_export_error(data->av[i]);
+				i++;
+				continue ;
+			}
 			cmp(data->av[i]);
 			i++;
 		}

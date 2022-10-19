@@ -75,17 +75,22 @@ void	ls_next_null(t_cmd *data, int *terminal)
 	if (buitin_exeution(data) == -1)
 		one_cmd(data);
 	reset_std(terminal);
+	signal(SIGINT, handler);
 }
 
 pid_t	ls_next_not_null(t_cmd *data, int *terminal)
 {
 	pid_t	f_pid;
 
+	signal(SIGINT, SIG_IGN);
 	f_pid = multi_pipes(data);
 	reset_std(terminal);
 	if (data->next != NULL)
 		close(data->pipe[1]);
 	if (data->prev != NULL)
+	{
+		// printf("..%d\n", data->prev->pipe[0]);
 		close (data->prev->pipe[0]);
+	}
 	return (f_pid);
 }

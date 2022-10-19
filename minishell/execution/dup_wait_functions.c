@@ -18,6 +18,8 @@ void	dup_stdin(t_cmd	*data)
 		dup2(data->prev->pipe[0], 0);
 	else if (data->flag == 1 && data->in_file_fd != 0)
 		dup2(data->in_file_fd, 0);
+	if (data->next != NULL)
+		close (data->pipe[0]);
 }
 
 void	dup_stdout(t_cmd	*data)
