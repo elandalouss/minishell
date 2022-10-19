@@ -51,7 +51,7 @@ int		cmp_env(char *str1, char *str2);
 void	cmp_str_env(char **tmp_env);
 void	free_my_env(char	*av);
 pid_t	exec_cmd_2(t_cmd *data);
-int		cmp(char	*av);
+void	cmp(char	*av);
 int		check_builtin_error(char *str);
 char	**copy_2d(char **str1, char **str2);
 int		check_export_error(char *str);

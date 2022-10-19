@@ -80,7 +80,7 @@ void	removing_qoutes_and_expand(t_token	*tokens)
 	i = 0;
 	while (tokens)
 	{
-		if (ft_strchr(tokens->value, 'x'))	
+		if (ft_strchr(tokens->value, 'x'))
 			expander(tokens);
 		else
 		{

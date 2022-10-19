@@ -45,3 +45,10 @@ int	check_builtin_error(char *str)
 	}
 	return (1);
 }
+
+int	theres_eq(char *str)
+{
+	if (str && str[ft_strlen(str) - 1] == '=')
+		return (1);
+	return (0);
+}

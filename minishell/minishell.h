@@ -27,5 +27,4 @@ typedef struct s_cmd	t_cmd;
 t_cmd		*parsing_part(char *str);
 int			execution_part(t_cmd	*data);
 
-
 #endif

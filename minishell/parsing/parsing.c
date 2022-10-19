@@ -62,18 +62,18 @@ t_cmd	*parsing_part(char *str)
 		return (NULL);
 	}
 	error_management(&content);
-	if (check_error_code(&content) == 0)	
-	 	return (NULL);
+	if (check_error_code(&content) == 0)
+		return (NULL);
 	heredoc_racine(content.tokens);
-	if (check_error_code(&content) == 0)	
-	 	return (NULL);
+	if (check_error_code(&content) == 0)
+		return (NULL);
 	removing_qoutes_and_expand(content.tokens);
-	if (check_error_code(&content) == 0)	
-	 	return (NULL);
+	if (check_error_code(&content) == 0)
+		return (NULL);
 	cmds_line = list_init(content.tokens);
 	remplissage_cmds(cmds_line, content.tokens);
-	if (check_error_code(&content) == 0)	
-	 	return (NULL);
+	if (check_error_code(&content) == 0)
+		return (NULL);
 	ft_free_list(&content.tokens);
 	ft_free_content(&content);
 	return (cmds_line);

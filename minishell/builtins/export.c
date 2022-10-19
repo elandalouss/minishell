@@ -57,8 +57,7 @@ void	export_null(char **tmp_env)
 		i++;
 		free_tab(tmp2);
 	}
-	if(tmp_env)
-		free_tab(tmp_env);
+	free_tab(tmp_env);
 }
 
 void	print_export_error(char *str)

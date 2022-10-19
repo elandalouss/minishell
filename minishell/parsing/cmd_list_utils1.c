@@ -72,7 +72,7 @@ void	remplissage_cmds(t_cmd *cmds, t_token *tokens)
 	}
 }
 
-int check_error_code(t_data *content)
+int	check_error_code(t_data *content)
 {
 	if (g_codes.g_error_code != 0)
 	{

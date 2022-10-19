@@ -184,5 +184,4 @@ char			**split_all(char *av);
 void			handler(int code);
 int				check_error_code(t_data *content);
 
-
 #endif

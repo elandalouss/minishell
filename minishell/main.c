@@ -48,13 +48,8 @@ int	main(int ac, char **av, char **env)
 		add_history(str);
 		cmds_line = parsing_part(str);
 		if (g_codes.g_error_code != 0)
-		{
-			ft_close_all(cmds_line);
-			ft_free_cmds(&cmds_line);
 			continue ;
-		}
 		execution_part(cmds_line);
-
 		ft_close_all(cmds_line);
 		ft_free_cmds(&cmds_line);
 	}

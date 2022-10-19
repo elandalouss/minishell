@@ -79,7 +79,7 @@ int	cmp_env(char *str1, char *str2)
 				i++;
 		}
 	}
-	return (1);
+	return (i);
 }
 
 void	free_my_env(char	*av)
