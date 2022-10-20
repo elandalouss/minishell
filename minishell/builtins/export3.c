@@ -1,49 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   export3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/12 18:45:17 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/20 05:19:07 by jchennak         ###   ########.fr       */
+/*   Created: 2022/10/20 05:31:48 by jchennak          #+#    #+#             */
+/*   Updated: 2022/10/20 05:34:21 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	cwd(void)
+void	free_env(char *av)
 {
-	int		i;
-	char	*str;
+	char	**temp;
 
-	i = 0;
-	while (g_codes.g_env[i])
-	{
-		if (ft_strncmp(g_codes.g_env[i], "PWD=", 4) == 0)
-		{
-			str = ft_substr(g_codes.g_env[i], 4, \
-				ft_strlen(g_codes.g_env[i]));
-			printf("%s\n", str);
-			free(str);
-			break ;
-		}
-		i++;
-	}
+	temp = g_codes.g_env;
+	my_env(g_codes.g_env, av);
+	free_tab(temp);
 }
 
-void	pwd(void)
+void	init_tmp_struct(t_tmp	*vars, char *av)
 {
-	char	*test;
-	char	*res;
-
-	test = NULL;
-	res = getcwd(test, 10);
-	if (res != NULL)
-	{
-		printf("%s\n", res);
-		free(res);
-	}
-	else
-		cwd();
+	vars->arr_av = ft_split(av, '=');
+	vars->arr_env = ft_split(g_codes.g_env[vars->i], '=');
+	vars->join_av = ft_strjoin(vars->arr_av[0], "=");
+	vars->join_env = ft_strjoin(vars->arr_env[0], "=");
 }

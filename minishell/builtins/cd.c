@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 06:39:22 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/19 03:30:56 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/20 05:07:25 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void	add_oldpwd(char	*str)
 void	mini_function(char *pwd)
 {
 	add_oldpwd(pwd);
-	free(pwd);
 	new_pwd("PWD=");
 }
 
@@ -89,7 +88,7 @@ void	cd(t_cmd	*data)
 	while (g_codes.g_env[i])
 	{
 		if (ft_strncmp(g_codes.g_env[i], "PWD=", 4) == 0)
-			pwd = ft_strdup(g_codes.g_env[i]);
+			pwd = g_codes.g_env[i];
 		i++;
 	}
 	dir = chdir(data->av[1]);

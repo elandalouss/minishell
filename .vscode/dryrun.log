@@ -1,6 +1,6 @@
 make --dry-run --keep-going --print-directory
-make: Entering directory `/Users/jchennak/Desktop/mini_s'
-make: Leaving directory `/Users/jchennak/Desktop/mini_s'
+make: Entering directory `/Users/jchennak/Desktop/o_shell'
+make: Leaving directory `/Users/jchennak/Desktop/o_shell'
  
 make: *** No targets specified and no makefile found.  Stop.
 

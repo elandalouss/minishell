@@ -6,23 +6,11 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 21:29:00 by jchennak          #+#    #+#             */
-/*   Updated: 2022/10/19 05:18:09 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/20 05:32:57 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	free_env(char *av)
-{
-	char	**temp;
-
-	if (theres_eq(av))
-	{
-		temp = g_codes.g_env;
-		my_env(g_codes.g_env, av);
-		free_tab(temp);
-	}		
-}
 
 int	find_big_num(char	*arr_av, char *arr_env)
 {
@@ -65,29 +53,28 @@ void	add_env(char *av)
 
 void	replase_env(char	*av)
 {
-	int		i;
-	int		j;
-	char	**arr_env;
-	char	**arr_av;
+	t_tmp	*vars;
 
-	i = 0;
-	j = 0;
-	arr_env = ft_split(g_codes.g_env[i], '=');
-	arr_av = ft_split(av, '=');
-	while (g_codes.g_env[i])
+	vars = malloc(sizeof(t_tmp));
+	vars->i = 0;
+	vars->j = 0;
+	while (g_codes.g_env[vars->i])
 	{
-		arr_av = ft_split(av, '=');
-		arr_env = ft_split(g_codes.g_env[i], '=');
-		if (cmp_without_equal(ft_strjoin(arr_av[0], "="),
-				ft_strjoin(arr_env[0], "="), ft_strlen(av) + 1) != 0)
+		init_tmp_struct(vars, av);
+		if (cmp_without_equal(vars->join_av, \
+			vars->join_env, ft_strlen(av) + 1) != 0)
 		{
-			i++;
-			j++;
+			vars->i++;
+			vars->j++;
 		}
 		else
-			i++;
+			vars->i++;
+		free(vars->join_av);
+		free(vars->join_env);
+		free_tab(vars->arr_av);
+		free_tab(vars->arr_env);
 	}
-	if (i == j)
+	if (vars->i == vars->j)
 		free_my_env(av);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:23:24 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/19 03:29:15 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/20 05:34:46 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,16 @@ typedef struct s_cmd
 	struct s_cmd	*prev;
 }	t_cmd;
 
+typedef struct s_tmp
+{
+	int		i;
+	int		j;
+	char	**arr_env;
+	char	**arr_av;
+	char	*join_av;
+	char	*join_env;	
+}	t_tmp;
+
 int		lst_size(t_cmd	*data);
 void	dup_stdin(t_cmd	*data);
 void	dup_stdout(t_cmd	*data);
@@ -51,9 +61,11 @@ int		cmp_env(char *str1, char *str2);
 void	cmp_str_env(char **tmp_env);
 void	free_my_env(char	*av);
 pid_t	exec_cmd_2(t_cmd *data);
+void	free_env(char *av);
 void	cmp(char	*av);
 int		check_builtin_error(char *str);
 char	**copy_2d(char **str1, char **str2);
+void	init_tmp_struct(t_tmp	*vars, char *av);
 int		check_export_error(char *str);
 void	get_path_split_join(t_cmd	*data);
 int		theres_eq(char *str);

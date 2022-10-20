@@ -6,7 +6,7 @@
 /*   By: jchennak <jchennak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 14:23:31 by aelandal          #+#    #+#             */
-/*   Updated: 2022/10/19 03:20:46 by jchennak         ###   ########.fr       */
+/*   Updated: 2022/10/20 05:18:50 by jchennak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,6 @@ pid_t	ls_next_not_null(t_cmd *data, int *terminal)
 	if (data->next != NULL)
 		close(data->pipe[1]);
 	if (data->prev != NULL)
-	{
-		// printf("..%d\n", data->prev->pipe[0]);
 		close (data->prev->pipe[0]);
-	}
 	return (f_pid);
 }
